@@ -6,7 +6,7 @@ import {
   ItemAttribute,
   ItemAttributeDocument,
 } from '../../schema/item-attribute.schema';
-import { mapProductDocumentToProductAdminDto } from '../../../shop_shared/mapper/map.productDocument-to-productAdminDto';
+import { mapProductDocumentToProductAdminDto } from '../../mapper/map.productDocument-to-productAdminDto';
 import { ObjectId } from 'mongodb';
 import { Category, CategoryDocument } from '../../schema/category.schema';
 import {
