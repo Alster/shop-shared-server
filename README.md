@@ -3,5 +3,5 @@
 Contains database schemas
 
 
-# depends on: 
+# Depends on: 
  * https://github.com/Alster/shop-shared
