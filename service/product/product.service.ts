@@ -1,9 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import {
-  Product,
-  ProductDocument,
-} from '../../schema/product.schema';
-import { CreateProductRequestDto } from '../../dto/create-product.request.dto';
+import { Product, ProductDocument } from '../../schema/product.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import {
@@ -12,16 +8,14 @@ import {
 } from '../../schema/item-attribute.schema';
 import { mapProductDocumentToProductAdminDto } from '../../../src/shop/mapper/map.productDocument-to-productAdminDto';
 import { ObjectId } from 'mongodb';
-import {
-  Category,
-  CategoryDocument,
-} from '../../schema/category.schema';
+import { Category, CategoryDocument } from '../../schema/category.schema';
 import {
   ProductAdminDto,
   ProductAttributesDto,
 } from '../../../shop_shared/dto/product.dto';
 import { ProductListResponseDto } from '../../../shop_shared/dto/product-list.response.dto';
 import { LanguageEnum } from '../../../shop_shared/constants/localization';
+import { CreateProductRequestDto } from '../../dto/create-product.request.dto';
 
 @Injectable()
 export class ProductService {
