@@ -12,8 +12,8 @@ import {
   Length,
   Min,
 } from 'class-validator';
-import { TranslatedText } from '@alster/shop-shared/dto/translated-text';
 import { ObjectId } from 'mongodb';
+import { TranslatedText } from '../../shop_shared/dto/translated-text';
 
 export type CategoryDocument = HydratedDocument<Category>;
 
