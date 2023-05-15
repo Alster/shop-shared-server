@@ -1,5 +1,5 @@
 import { IsArray, IsInt, IsString, Length, Min } from 'class-validator';
-import { ProductItemDto } from '../../shop_shared/dto/product.dto';
+import { ProductItemDto } from '../../shop_shared/dto/product/product.dto';
 
 export class CreateProductRequestDto {
   @IsString()

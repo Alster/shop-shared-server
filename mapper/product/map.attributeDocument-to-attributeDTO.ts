@@ -1,6 +1,6 @@
-import { ItemAttributeDocument } from '../schema/item-attribute.schema';
-import { getTranslation } from '../helpers/translation-helpers';
-import { AttributeDto } from '../../shop_shared/dto/attribute.dto';
+import { ItemAttributeDocument } from '../../schema/item-attribute.schema';
+import { getTranslation } from '../../helpers/translation-helpers';
+import { AttributeDto } from '../../../shop_shared/dto/product/attribute.dto';
 
 export function mapAttributeDocumentToAttributeDTO(
   obj: ItemAttributeDocument,

@@ -1,6 +1,6 @@
-import { Category } from '../schema/category.schema';
-import { LanguageEnum } from '../../shop_shared/constants/localization';
-import { CategoryDto } from '../../shop_shared/dto/category.dto';
+import { Category } from '../../schema/category.schema';
+import { LanguageEnum } from '../../../shop_shared/constants/localization';
+import { CategoryDto } from '../../../shop_shared/dto/category/category.dto';
 
 export function mapCategoryToCategoryDto(
   obj: Category,

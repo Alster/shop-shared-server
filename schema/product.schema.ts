@@ -15,7 +15,7 @@ import { TranslatedText } from '../../shop_shared/dto/translated-text';
 import {
   ProductAttributesDto,
   ProductItemDto,
-} from '../../shop_shared/dto/product.dto';
+} from '../../shop_shared/dto/product/product.dto';
 
 export type ProductDocument = HydratedDocument<Product>;
 

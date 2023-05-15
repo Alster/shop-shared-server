@@ -6,16 +6,16 @@ import {
   ItemAttribute,
   ItemAttributeDocument,
 } from '../../schema/item-attribute.schema';
-import { mapProductDocumentToProductAdminDto } from '../../mapper/map.productDocument-to-productAdminDto';
+import { mapProductDocumentToProductAdminDto } from '../../mapper/product/map.productDocument-to-productAdminDto';
 import { ObjectId } from 'mongodb';
 import { Category, CategoryDocument } from '../../schema/category.schema';
+import { LanguageEnum } from '../../../shop_shared/constants/localization';
+import { CreateProductRequestDto } from '../../dto/create-product.request.dto';
 import {
   ProductAdminDto,
   ProductAttributesDto,
-} from '../../../shop_shared/dto/product.dto';
-import { ProductListResponseDto } from '../../../shop_shared/dto/product-list.response.dto';
-import { LanguageEnum } from '../../../shop_shared/constants/localization';
-import { CreateProductRequestDto } from '../../dto/create-product.request.dto';
+} from '../../../shop_shared/dto/product/product.dto';
+import { ProductListResponseDto } from '../../../shop_shared/dto/product/product-list.response.dto';
 
 @Injectable()
 export class ProductService {

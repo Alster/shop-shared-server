@@ -2,12 +2,12 @@ import {
   CategoriesTree,
   CategoriesTreeDocument,
   CategoryNode,
-} from '../schema/categories-tree.schema';
+} from '../../schema/categories-tree.schema';
 import { ObjectId } from 'mongodb';
 import {
   CategoriesNodeDto,
   CategoriesTreeDto,
-} from '../../shop_shared/dto/categories-tree.dto';
+} from '../../../shop_shared/dto/category/categories-tree.dto';
 
 function mapCategoryNodeToCategoriesNodeDTO(
   obj: CategoryNode,
