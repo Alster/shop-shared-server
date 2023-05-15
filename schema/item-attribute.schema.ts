@@ -1,15 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import {
-  IsArray,
   IsBoolean,
   IsDate,
   IsEnum,
-  IsInt,
   IsObject,
   IsString,
   Length,
-  Min,
 } from 'class-validator';
 import { TranslatedText } from '../../shop_shared/dto/translated-text';
 import {
@@ -24,7 +21,9 @@ export interface AttributeValueDto {
 
 export type ItemAttributeDocument = HydratedDocument<ItemAttribute>;
 
-@Schema()
+@Schema({
+  collection: 'item_attribute',
+})
 export class ItemAttribute {
   @Prop({ type: Object, default: {} })
   @IsObject()

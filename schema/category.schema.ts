@@ -1,23 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import {
-  IsArray,
-  IsBoolean,
-  IsDate,
-  IsEnum,
-  IsInt,
-  IsNumber,
-  IsObject,
-  IsString,
-  Length,
-  Min,
-} from 'class-validator';
+import { IsArray, IsNumber, IsObject } from 'class-validator';
 import { ObjectId } from 'mongodb';
 import { TranslatedText } from '../../shop_shared/dto/translated-text';
 
 export type CategoryDocument = HydratedDocument<Category>;
 
-@Schema()
+@Schema({
+  collection: 'category',
+})
 export class Category {
   @Prop({ type: ObjectId })
   _id!: ObjectId;

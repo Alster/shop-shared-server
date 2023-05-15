@@ -1,17 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-import {
-  IsArray,
-  IsBoolean,
-  IsDate,
-  IsEnum,
-  IsInt,
-  IsNumber,
-  IsObject,
-  IsString,
-  Length,
-  Min,
-} from 'class-validator';
+import { IsArray, IsBoolean, IsNumber, IsObject } from 'class-validator';
 import { ObjectId } from 'mongodb';
 import { TranslatedText } from '../../shop_shared/dto/translated-text';
 
@@ -42,7 +31,9 @@ export class CategoryNode {
 
 export type CategoriesTreeDocument = HydratedDocument<CategoriesTree>;
 
-@Schema()
+@Schema({
+  collection: 'categories_tree',
+})
 export class CategoriesTree {
   @Prop({ type: Object, default: {} })
   @IsObject()

@@ -7,7 +7,6 @@ import {
   IsInt,
   IsObject,
   IsString,
-  Length,
   Min,
 } from 'class-validator';
 import { ObjectId } from 'mongodb';
@@ -19,7 +18,9 @@ import {
 
 export type ProductDocument = HydratedDocument<Product>;
 
-@Schema()
+@Schema({
+  collection: 'product',
+})
 export class Product {
   @Prop({ type: Object, default: {} })
   @IsObject()
