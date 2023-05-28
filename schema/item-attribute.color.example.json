@@ -1,0 +1,126 @@
+{
+  "title": {
+    "en": "Color",
+    "ua": "Колір"
+  },
+  "description": {
+    "en": "Color",
+    "ua": "Колір"
+  },
+  "key": "color",
+  "type": "select",
+  "values": [
+    {
+      "key": "red",
+        "title": {
+            "en": "Red",
+            "ua": "Червоний"
+        }
+    },
+    {
+      "key": "green",
+        "title": {
+            "en": "Green",
+            "ua": "Зелений"
+        }
+    },
+    {
+      "key": "blue",
+        "title": {
+            "en": "Blue",
+            "ua": "Синій"
+        }
+    },
+    {
+      "key": "yellow",
+      "title": {
+          "en": "Yellow",
+          "ua": "Жовтий"
+      }
+    },
+    {
+      "key": "black",
+      "title": {
+          "en": "Black",
+          "ua": "Чорний"
+      }
+    },
+    {
+      "key": "white",
+      "title": {
+          "en": "White",
+          "ua": "Білий"
+      }
+    },
+    {
+      "key": "grey",
+      "title": {
+          "en": "Grey",
+          "ua": "Сірий"
+      }
+    },
+    {
+      "key": "brown",
+      "title": {
+          "en": "Brown",
+          "ua": "Коричневий"
+      }
+    },
+    {
+      "key": "orange",
+      "title": {
+          "en": "Orange",
+          "ua": "Помаранчевий"
+      }
+    },
+    {
+      "key": "pink",
+      "title": {
+          "en": "Pink",
+          "ua": "Рожевий"
+      }
+    },
+    {
+      "key": "purple",
+      "title": {
+          "en": "Purple",
+          "ua": "Фіолетовий"
+      }
+    },
+    {
+      "key": "beige",
+      "title": {
+          "en": "Beige",
+          "ua": "Бежевий"
+      }
+    },
+    {
+      "key": "gold",
+      "title": {
+          "en": "Gold",
+          "ua": "Золотий"
+      }
+    },
+    {
+      "key": "silver",
+      "title": {
+          "en": "Silver",
+          "ua": "Срібний"
+      }
+    },
+    {
+      "key": "multicolor",
+      "title": {
+          "en": "Multicolor",
+          "ua": "Багатокольоровий"
+      }
+    },
+    {
+      "key": "transparent",
+      "title": {
+          "en": "Transparent",
+          "ua": "Прозорий"
+      }
+    }
+  ]
+}

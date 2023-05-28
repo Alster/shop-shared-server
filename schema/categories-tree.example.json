@@ -1,0 +1,32 @@
+{
+  "root": [
+    {
+      "_id": "5f5f5f5f5f5f5f5f5f5f5f5f",
+      "title": {
+        "en": "For woman",
+        "ua": "Для жінок"
+      },
+      "description": {
+        "en": "Clothes for woman",
+        "ua": "Одяг для жінок"
+      },
+      "sort": 1,
+      "children": [],
+      "active": true
+    },
+    {
+      "_id": "3f3f3f3f3f3f3f3f3f3f3f3f",
+      "title": {
+        "en": "For man",
+        "ua": "Для чоловіків"
+      },
+      "description": {
+        "en": "Clothes for man",
+        "ua": "Одяг для чоловіків"
+      },
+      "sort": 2,
+      "children": [],
+      "active": true
+    }
+  ]
+}

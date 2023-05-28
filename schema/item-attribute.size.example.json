@@ -1,0 +1,49 @@
+{
+  "title": {
+    "en": "Sie",
+    "ua": "Розмір"
+  },
+  "description": {
+    "en": "Sie",
+    "ua": "Розмір"
+  },
+  "key": "size",
+  "type": "select",
+  "values": [
+    {
+      "key": "s",
+      "title": {
+        "en": "S",
+        "ua": "S"
+      }
+    },
+    {
+      "key": "m",
+      "title": {
+        "en": "M",
+        "ua": "M"
+      }
+    },
+    {
+      "key": "l",
+      "title": {
+        "en": "L",
+        "ua": "L"
+      }
+    },
+    {
+      "key": "xl",
+      "title": {
+          "en": "XL",
+          "ua": "XL"
+      }
+    },
+    {
+      "key": "xxl",
+      "title": {
+        "en": "XXL",
+        "ua": "XXL"
+      }
+    }
+  ]
+}
