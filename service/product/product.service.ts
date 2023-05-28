@@ -15,7 +15,6 @@ import {
   ProductAdminDto,
   ProductAttributesDto,
 } from '../../../shop_shared/dto/product/product.dto';
-import { ProductListResponseDto } from '../../../shop_shared/dto/product/product-list.response.dto';
 
 @Injectable()
 export class ProductService {
@@ -121,7 +120,12 @@ export class ProductService {
     skip: number,
     limit: number,
     lang: LanguageEnum,
-  ): Promise<ProductListResponseDto> {
+  ): Promise<{
+    products: ProductDocument[];
+    total: number;
+    filters: { [key: string]: Set<string> };
+    categories: string[];
+  }> {
     console.log('Query:', JSON.stringify(query, null, 2));
     console.log('Sort:', JSON.stringify(sort, null, 2));
     const getProducts = async () =>
@@ -188,9 +192,7 @@ export class ProductService {
     ]);
 
     return {
-      products: products.map((product) =>
-        mapProductDocumentToProductAdminDto(product),
-      ),
+      products: products,
       total: totalCount,
       filters: aggregatedResult?.attrs || {},
       categories: aggregatedResult?.categories || [],
