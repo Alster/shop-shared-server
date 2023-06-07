@@ -45,7 +45,7 @@ export class ProductService {
       .findById(referenceId)
       .exec();
     if (!referenceProduct) {
-      throw new Error(`Product not found with id ${referenceId}`);
+      throw new NotFoundException();
     }
 
     const createdProduct = await this.createProduct({
