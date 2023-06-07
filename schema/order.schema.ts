@@ -14,7 +14,7 @@ import { ORDER_STATUS, OrderStatus } from '../../shop_shared/constants/order';
 import {
   CreateOrderItemDataDto,
   DeliveryDataDto,
-} from '../dto/create-order.dto';
+} from '../../shop_shared/dto/order/create-order.dto';
 
 export type OrderDocument = HydratedDocument<Order>;
 
