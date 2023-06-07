@@ -11,6 +11,7 @@ export function mapOrderDocumentToOrderDto(
     phoneNumber: orderDocument.phoneNumber,
     itemsData: orderDocument.itemsData,
     delivery: orderDocument.delivery,
+    totalPrice: orderDocument.totalPrice,
     status: orderDocument.status,
     createDate: orderDocument.createDate.toISOString(),
   };

@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 import { Order, OrderDocument } from '../../schema/order.schema';
-import { Product, ProductDocument } from "../../schema/product.schema";
+import { Product, ProductDocument } from '../../schema/product.schema';
 import {
   CreateOrderDto,
   CreateOrderItemDataDto,
@@ -96,6 +96,11 @@ export class OrderService {
           await product.save({ session });
         }
 
+        const totalPrice = products.reduce((acc, product) => {
+          acc += product.price;
+          return acc;
+        }, 0);
+
         order = await this.orderModel.create(
           [
             {
@@ -104,6 +109,7 @@ export class OrderService {
               phoneNumber: createOrderData.phoneNumber,
               itemsData: createOrderData.itemsData,
               delivery: createOrderData.delivery,
+              totalPrice,
               status: ORDER_STATUS.CREATED,
               createDate: new Date(),
             },
