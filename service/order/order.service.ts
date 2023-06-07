@@ -1,18 +1,25 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
+import { Model, Connection } from 'mongoose';
 import { Order, OrderDocument } from '../../schema/order.schema';
 import { Product, ProductDocument } from '../../schema/product.schema';
-import { CreateOrderDto } from '../../../shop_shared/dto/order/create-order.dto';
+import {
+  CreateOrderDto,
+  CreateOrderItemDataDto,
+} from '../../../shop_shared/dto/order/create-order.dto';
 import { ORDER_STATUS } from '../../../shop_shared/constants/order';
+import { ProductItemDto } from '../../../shop_shared/dto/product/product.dto';
+import { PublicError } from '../../helpers/publicError';
 
 @Injectable()
 export class OrderService {
   private logger: Logger = new Logger(OrderService.name);
 
   constructor(
-    @InjectModel(Order.name) private orderModel: Model<OrderDocument>,
-    @InjectModel(Product.name) private productModel: Model<ProductDocument>,
+    @InjectModel(Order.name) private readonly orderModel: Model<OrderDocument>,
+    @InjectModel(Product.name)
+    private readonly productModel: Model<ProductDocument>,
+    @InjectConnection() private readonly connection: Connection,
   ) {}
 
   async getOrder(id: string): Promise<OrderDocument | null> {
@@ -21,15 +28,110 @@ export class OrderService {
 
   async createOrder(createOrderData: CreateOrderDto): Promise<OrderDocument> {
     this.logger.log('createOrder', createOrderData);
-    const order = await this.orderModel.create({
-      firstName: createOrderData.firstName,
-      lastName: createOrderData.lastName,
-      phoneNumber: createOrderData.phoneNumber,
-      itemsData: createOrderData.itemsData,
-      delivery: createOrderData.delivery,
-      status: ORDER_STATUS.CREATED,
-      createDate: new Date(),
-    });
-    return order;
+
+    if (!createOrderData.itemsData.length) {
+      throw new PublicError('NO_ITEMS');
+    }
+
+    const session = await this.connection.startSession();
+
+    let order: OrderDocument[] | null = null;
+    let error: Error | null = null;
+
+    try {
+      await session.withTransaction(async () => {
+        const products: ProductDocument[] = await this.productModel
+          .find({
+            _id: {
+              $in: createOrderData.itemsData.map((item) => item.productId),
+            },
+          })
+          .session(session);
+        const productsMap = Object.fromEntries(
+          products.map((product) => [product._id.toString(), product]),
+        );
+
+        for (const itemData of createOrderData.itemsData) {
+          const product = productsMap[itemData.productId];
+          if (!product) {
+            throw new Error(`Product with id ${itemData.productId} not found`);
+          }
+          if (product.items.length === 0) {
+            throw new PublicError(`ITEM_ALREADY_SELL`);
+          }
+
+          const popItem = (
+            item: CreateOrderItemDataDto,
+          ): ProductItemDto | null => {
+            const foundItem = product.items.find((candidate) => {
+              return Object.entries(item.attrs).every(([key, values]) => {
+                return values.every(
+                  (v) =>
+                    candidate.attributes[key] &&
+                    candidate.attributes[key].includes(v),
+                );
+              });
+            });
+
+            if (!foundItem) {
+              return null;
+            }
+
+            const index = product.items.indexOf(foundItem);
+            product.items.splice(index, 1);
+
+            return foundItem;
+          };
+
+          for (const _i of Array.from({ length: itemData.qty })) {
+            const item = popItem(itemData);
+            if (!item) {
+              throw new PublicError('ITEM_ALREADY_SELL');
+            }
+          }
+        }
+
+        for (const product of products) {
+          await this.productModel
+            .updateOne(
+              {
+                _id: product._id,
+              },
+              {
+                $set: {
+                  items: product.items,
+                },
+              },
+            )
+            .session(session);
+        }
+
+        order = await this.orderModel.create(
+          {
+            firstName: createOrderData.firstName,
+            lastName: createOrderData.lastName,
+            phoneNumber: createOrderData.phoneNumber,
+            itemsData: createOrderData.itemsData,
+            delivery: createOrderData.delivery,
+            status: ORDER_STATUS.CREATED,
+            createDate: new Date(),
+          },
+          { session },
+        );
+      });
+    } catch (err) {
+      this.logger.error(`Error while creating order`);
+      this.logger.error(err);
+      error = err;
+    } finally {
+      await session.endSession();
+    }
+    if (error) {
+      throw error;
+    }
+    if (!order) {
+      throw new Error('Impossible error');
+    }
+    return order[0];
   }
 }
