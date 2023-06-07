@@ -16,7 +16,6 @@ export class OrderService {
   ) {}
 
   async getOrder(id: string): Promise<OrderDocument | null> {
-    this.logger.log(`getOrder ${id}`);
     return this.orderModel.findById(id).exec();
   }
 
@@ -29,6 +28,7 @@ export class OrderService {
       itemsData: createOrderData.itemsData,
       delivery: createOrderData.delivery,
       status: ORDER_STATUS.CREATED,
+      createDate: new Date(),
     });
     return order;
   }
