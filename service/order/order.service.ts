@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 import { Order, OrderDocument } from '../../schema/order.schema';
-import { Product, ProductDocument } from '../../schema/product.schema';
+import { Product, ProductDocument } from "../../schema/product.schema";
 import {
   CreateOrderDto,
   CreateOrderItemDataDto,
@@ -92,36 +92,28 @@ export class OrderService {
         }
 
         for (const product of products) {
-          await this.productModel
-            .updateOne(
-              {
-                _id: product._id,
-              },
-              {
-                $set: {
-                  items: product.items,
-                },
-              },
-            )
-            .session(session);
+          product.markModified('items');
+          await product.save({ session });
         }
 
         order = await this.orderModel.create(
-          {
-            firstName: createOrderData.firstName,
-            lastName: createOrderData.lastName,
-            phoneNumber: createOrderData.phoneNumber,
-            itemsData: createOrderData.itemsData,
-            delivery: createOrderData.delivery,
-            status: ORDER_STATUS.CREATED,
-            createDate: new Date(),
-          },
+          [
+            {
+              firstName: createOrderData.firstName,
+              lastName: createOrderData.lastName,
+              phoneNumber: createOrderData.phoneNumber,
+              itemsData: createOrderData.itemsData,
+              delivery: createOrderData.delivery,
+              status: ORDER_STATUS.CREATED,
+              createDate: new Date(),
+            },
+          ],
           { session },
         );
       });
     } catch (err) {
-      this.logger.error(`Error while creating order`);
-      this.logger.error(err);
+      this.logger.error(`Error while creating order ${err.message}`);
+      this.logger.error(err.stack);
       error = err;
     } finally {
       await session.endSession();

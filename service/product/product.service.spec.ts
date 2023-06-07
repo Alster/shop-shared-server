@@ -64,7 +64,7 @@ describe('ProductService', () => {
   it('Create a product', async () => {
     const { attrColor, attrSize } = await mockCreateAttributes();
     const productSkirt = await service.createProduct({
-      name: 'Skit',
+      name: 'Skirt',
       price: 100,
       items: [
         {
@@ -84,7 +84,7 @@ describe('ProductService', () => {
       ],
     });
     const productShirt = await service.createProduct({
-      name: 'Test',
+      name: 'Shirt',
       price: 150,
       items: [
         {

@@ -22,7 +22,7 @@ import { ATTRIBUTE_TYPE } from '../../../shop_shared/constants/product';
 import { ORDER_STATUS } from '../../../shop_shared/constants/order';
 
 describe('OrderService', () => {
-  let service: OrderService;
+  let orderService: OrderService;
   let productService: ProductService;
   let orderModel: Model<OrderDocument>;
   let productModel: Model<ProductDocument>;
@@ -35,7 +35,7 @@ describe('OrderService', () => {
       .setLogger(new ConsoleLogger())
       .compile();
 
-    service = module.get<OrderService>(OrderService);
+    orderService = module.get<OrderService>(OrderService);
     productService = module.get<ProductService>(ProductService);
     orderModel = module.get(getModelToken(Order.name));
     productModel = module.get(getModelToken(Product.name));
@@ -49,7 +49,7 @@ describe('OrderService', () => {
   });
 
   it('should be defined', () => {
-    expect(service).toBeDefined();
+    expect(orderService).toBeDefined();
   });
 
   it('should create order', async () => {
@@ -72,7 +72,7 @@ describe('OrderService', () => {
     });
 
     const productSkirt = await productService.createProduct({
-      name: 'Skit',
+      name: 'Skirt',
       price: 100,
       items: [
         {
@@ -116,7 +116,7 @@ describe('OrderService', () => {
     };
 
     // Do order creation
-    const createdOrder = await service.createOrder(createOrderDto);
+    const createdOrder = await orderService.createOrder(createOrderDto);
     const order: OrderDocument | null = await orderModel.findById(
       createdOrder._id,
     );
@@ -166,7 +166,7 @@ describe('OrderService', () => {
       productSkirt._id,
     );
     expect(productSkirtAfter).toBeDefined();
-    expect(productSkirtAfter?.items.length).toBe(1);
+    expect(productSkirtAfter?.items.length).  toBe(1);
     expect(productSkirtAfter?.items[0].attributes[attrColor.key].length).toBe(
       1,
     );
@@ -177,5 +177,19 @@ describe('OrderService', () => {
     expect(productSkirtAfter?.items[0].attributes[attrSize.key][0]).toBe(
       MockSize.S,
     );
+    expect(productSkirtAfter?.attrs[attrColor.key]).toBeDefined();
+    console.log(productSkirtAfter?.attrs[attrColor.key]);
+    expect(productSkirtAfter?.attrs[attrColor.key].length).toBe(1);
+    expect(productSkirtAfter?.attrs[attrColor.key][0]).toBe(MockColor.BLUE);
+
+    expect(productSkirtAfter?.attrs[attrSize.key]).toBeDefined();
+    expect(productSkirtAfter?.attrs[attrSize.key].length).toBe(1);
+    expect(productSkirtAfter?.attrs[attrSize.key][0]).toBe(MockSize.S);
+
+    // Test get order
+    const foundOrderByService = await orderService.getOrder(
+      order._id.toString(),
+    );
+    expect(foundOrderByService).toBeDefined();
   });
 });
