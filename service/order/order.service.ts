@@ -10,6 +10,7 @@ import {
 import { ORDER_STATUS } from '../../../shop_shared/constants/order';
 import { ProductItemDto } from '../../../shop_shared/dto/product/product.dto';
 import { PublicError } from '../../helpers/publicError';
+import { LanguageEnum } from '../../../shop_shared/constants/localization';
 
 @Injectable()
 export class OrderService {
@@ -24,6 +25,28 @@ export class OrderService {
 
   async getOrder(id: string): Promise<OrderDocument | null> {
     return this.orderModel.findById(id).exec();
+  }
+
+  public async find(
+    query: any,
+    sort: any,
+    skip: number,
+    limit: number,
+  ): Promise<{
+    orders: OrderDocument[];
+    total: number;
+  }> {
+    console.log('Query:', JSON.stringify(query, null, 2));
+    console.log('Sort:', JSON.stringify(sort, null, 2));
+    const getOrders = async () =>
+      this.orderModel.find(query).sort(sort).skip(skip).limit(limit).exec();
+    const getCount = async () => this.orderModel.countDocuments(query);
+    const [orders, totalCount] = await Promise.all([getOrders(), getCount()]);
+
+    return {
+      orders: orders,
+      total: totalCount,
+    };
   }
 
   async createOrder(createOrderData: CreateOrderDto): Promise<OrderDocument> {
