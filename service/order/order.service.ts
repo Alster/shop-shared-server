@@ -10,7 +10,6 @@ import {
 import { ORDER_STATUS } from '../../../shop_shared/constants/order';
 import { ProductItemDto } from '../../../shop_shared/dto/product/product.dto';
 import { PublicError } from '../../helpers/publicError';
-import { LanguageEnum } from '../../../shop_shared/constants/localization';
 
 @Injectable()
 export class OrderService {
