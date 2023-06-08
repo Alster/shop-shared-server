@@ -10,6 +10,8 @@ import {
 import { ORDER_STATUS } from '../../../shop_shared/constants/order';
 import { ProductItemDto } from '../../../shop_shared/dto/product/product.dto';
 import { PublicError } from '../../helpers/publicError';
+import { fetchMono } from '../../../src/utils/fetchMono';
+import { LanguageEnum } from '../../../shop_shared/constants/localization';
 
 @Injectable()
 export class OrderService {
@@ -26,7 +28,10 @@ export class OrderService {
     return this.orderModel.findById(id).exec();
   }
 
-  async createOrder(createOrderData: CreateOrderDto): Promise<OrderDocument> {
+  async createOrder(
+    createOrderData: CreateOrderDto,
+    lang: LanguageEnum,
+  ): Promise<OrderDocument> {
     this.logger.log('createOrder', createOrderData);
 
     if (!createOrderData.itemsData.length) {
@@ -109,13 +114,30 @@ export class OrderService {
               phoneNumber: createOrderData.phoneNumber,
               itemsData: createOrderData.itemsData,
               delivery: createOrderData.delivery,
-              totalPrice,
+              totalPrice: Math.round(totalPrice),
               status: ORDER_STATUS.CREATED,
               createDate: new Date(),
             },
           ],
           { session },
         );
+
+        // const monoResponse: {
+        //   invoiceId: string;
+        //   pageUrl: string;
+        // } = await fetchMono({
+        //   amount: Math.round(totalPrice * 100),
+        //   ccy: 980,
+        //   merchantPaymInfo: {
+        //     reference: order[0]._id.toString(),
+        //     destination: 'Покупка щастя',
+        //     basketOrder: [],
+        //   },
+        //   redirectUrl: `http://localhost:3000/${lang}/order/${order[0]._id.toString()}`,
+        //   webHookUrl: 'http://api.unicorn.ua/order/webhook/mono/',
+        //   validity: 3600,
+        //   paymentType: 'debit',
+        // });
       });
     } catch (err) {
       this.logger.error(`Error while creating order ${err.message}`);

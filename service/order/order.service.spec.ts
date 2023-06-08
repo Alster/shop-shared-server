@@ -166,7 +166,7 @@ describe('OrderService', () => {
       productSkirt._id,
     );
     expect(productSkirtAfter).toBeDefined();
-    expect(productSkirtAfter?.items.length).  toBe(1);
+    expect(productSkirtAfter?.items.length).toBe(1);
     expect(productSkirtAfter?.items[0].attributes[attrColor.key].length).toBe(
       1,
     );
