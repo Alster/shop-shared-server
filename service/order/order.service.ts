@@ -28,10 +28,7 @@ export class OrderService {
     return this.orderModel.findById(id).exec();
   }
 
-  async createOrder(
-    createOrderData: CreateOrderDto,
-    lang: LanguageEnum,
-  ): Promise<OrderDocument> {
+  async createOrder(createOrderData: CreateOrderDto): Promise<OrderDocument> {
     this.logger.log('createOrder', createOrderData);
 
     if (!createOrderData.itemsData.length) {
@@ -121,23 +118,6 @@ export class OrderService {
           ],
           { session },
         );
-
-        // const monoResponse: {
-        //   invoiceId: string;
-        //   pageUrl: string;
-        // } = await fetchMono({
-        //   amount: Math.round(totalPrice * 100),
-        //   ccy: 980,
-        //   merchantPaymInfo: {
-        //     reference: order[0]._id.toString(),
-        //     destination: 'Покупка щастя',
-        //     basketOrder: [],
-        //   },
-        //   redirectUrl: `http://localhost:3000/${lang}/order/${order[0]._id.toString()}`,
-        //   webHookUrl: 'http://api.unicorn.ua/order/webhook/mono/',
-        //   validity: 3600,
-        //   paymentType: 'debit',
-        // });
       });
     } catch (err) {
       this.logger.error(`Error while creating order ${err.message}`);
