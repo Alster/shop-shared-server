@@ -4,12 +4,13 @@ import {
   IsArray,
   IsDate,
   IsEnum,
-  IsMobilePhone, IsNumber,
+  IsMobilePhone,
+  IsNumber,
   IsObject,
   IsPhoneNumber,
   IsString,
-  Length
-} from "class-validator";
+  Length,
+} from 'class-validator';
 import { ORDER_STATUS, OrderStatus } from '../../shop_shared/constants/order';
 import {
   CreateOrderItemDataDto,
@@ -46,9 +47,13 @@ export class Order {
   @IsObject()
   delivery!: DeliveryDataDto;
 
-  @Prop({ type: Number, default: {} })
+  @Prop({ type: Number, default: 0 })
   @IsNumber()
   totalPrice!: number;
+
+  @Prop({ type: String, default: '' })
+  @IsString()
+  currency!: string;
 
   @Prop({ type: String })
   @IsEnum(ORDER_STATUS)

@@ -12,6 +12,7 @@ export function mapOrderDocumentToOrderDto(
     itemsData: orderDocument.itemsData,
     delivery: orderDocument.delivery,
     totalPrice: orderDocument.totalPrice,
+    currency: orderDocument.currency,
     status: orderDocument.status,
     createDate: orderDocument.createDate.toISOString(),
   };

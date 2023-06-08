@@ -135,6 +135,7 @@ export class OrderService {
               itemsData: createOrderData.itemsData,
               delivery: createOrderData.delivery,
               totalPrice: Math.round(totalPrice),
+              currency: createOrderData.currency,
               status: ORDER_STATUS.CREATED,
               createDate: new Date(),
             },
