@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 import { Order, OrderDocument } from '../../schema/order.schema';
@@ -7,7 +7,10 @@ import {
   CreateOrderDto,
   CreateOrderItemDataDto,
 } from '../../../shop_shared/dto/order/create-order.dto';
-import { ORDER_STATUS } from '../../../shop_shared/constants/order';
+import {
+  ORDER_STATUS,
+  OrderStatus,
+} from '../../../shop_shared/constants/order';
 import { ProductItemDto } from '../../../shop_shared/dto/product/product.dto';
 import { PublicError } from '../../helpers/publicError';
 
@@ -153,5 +156,17 @@ export class OrderService {
       throw new Error('Impossible error');
     }
     return order[0];
+  }
+
+  async updateOrderStatus(
+    id: string,
+    status: OrderStatus,
+  ): Promise<OrderDocument> {
+    await this.orderModel.updateOne({ _id: id }, { status: status });
+    const order = await this.getOrder(id);
+    if (!order) {
+      throw new NotFoundException();
+    }
+    return order;
   }
 }
