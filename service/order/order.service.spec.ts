@@ -93,6 +93,7 @@ describe('OrderService', () => {
     });
 
     const createOrderDto: CreateOrderDto = {
+      currency: 'UAH',
       firstName: 'John',
       lastName: 'Doe',
       phoneNumber: '+380123456789',
