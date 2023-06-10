@@ -13,6 +13,7 @@ import {
 } from '../../../shop_shared/constants/order';
 import { ProductItemDto } from '../../../shop_shared/dto/product/product.dto';
 import { PublicError } from '../../helpers/publicError';
+import { SmallMoney } from '../../dto/primitiveTypes';
 
 @Injectable()
 export class OrderService {
@@ -121,8 +122,8 @@ export class OrderService {
           await product.save({ session });
         }
 
-        const totalPrice = products.reduce((acc, product) => {
-          acc += product.price;
+        const totalPrice: SmallMoney = products.reduce((acc, product) => {
+          acc += product.price as number;
           return acc;
         }, 0);
 
