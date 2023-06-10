@@ -15,7 +15,7 @@ import {
   ProductAttributesDto,
   ProductItemDto,
 } from '../../shop_shared/dto/product/product.dto';
-import { MoneySmall } from '../dto/primitiveTypes';
+import { MoneySmall } from '../../shop_shared/dto/primitiveTypes';
 
 export type ProductDocument = HydratedDocument<Product>;
 

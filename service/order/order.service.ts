@@ -13,7 +13,7 @@ import {
 } from '../../../shop_shared/constants/order';
 import { ProductItemDto } from '../../../shop_shared/dto/product/product.dto';
 import { PublicError } from '../../helpers/publicError';
-import { MoneySmall } from '../../dto/primitiveTypes';
+import { MoneySmall } from '../../../shop_shared/dto/primitiveTypes';
 
 @Injectable()
 export class OrderService {

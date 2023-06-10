@@ -16,7 +16,7 @@ import {
   CreateOrderItemDataDto,
   DeliveryDataDto,
 } from '../../shop_shared/dto/order/create-order.dto';
-import { MoneySmall } from '../dto/primitiveTypes';
+import { MoneySmall } from '../../shop_shared/dto/primitiveTypes';
 
 export type OrderDocument = HydratedDocument<Order>;
 
