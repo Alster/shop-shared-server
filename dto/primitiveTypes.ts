@@ -1,13 +1,13 @@
 enum _smallMoney {}
-export type SmallMoney = number | { _A: _smallMoney };
+export type MoneySmall = number | { _A: _smallMoney };
 
 enum _bigMoney {}
-export type BigMoney = number | { _A: _bigMoney };
+export type MoneyBig = number | { _A: _bigMoney };
 
-export function moneySmallToBig(x: SmallMoney): BigMoney {
-  return (Math.floor(x as number) / 100) as BigMoney;
+export function moneySmallToBig(x: MoneySmall): MoneyBig {
+  return (Math.floor(x as number) / 100) as MoneyBig;
 }
 
-export function moneyBigToSmall(x: BigMoney): SmallMoney {
-  return Math.floor((x as number) * 100) as SmallMoney;
+export function moneyBigToSmall(x: MoneyBig): MoneySmall {
+  return Math.floor((x as number) * 100) as MoneySmall;
 }
