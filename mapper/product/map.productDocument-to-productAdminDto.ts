@@ -13,7 +13,7 @@ export function mapProductDocumentToProductAdminDto(
     items: obj.items,
     attrs: obj.attrs,
     quantity: obj.quantity,
-    price: obj.price,
+    price: obj.price / 100,
     discount: obj.discount,
     currency: obj.currency,
     active: obj.active,

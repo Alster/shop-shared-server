@@ -15,7 +15,7 @@ export function mapProductDocumentToProductDto(
     items: obj.items,
     attrs: obj.attrs,
     quantity: obj.quantity,
-    price: obj.price,
+    price: obj.price / 100,
     discount: obj.discount,
     active: obj.active,
     createDate: 'no any date ololo',
