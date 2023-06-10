@@ -16,6 +16,7 @@ import {
   CreateOrderItemDataDto,
   DeliveryDataDto,
 } from '../../shop_shared/dto/order/create-order.dto';
+import { SmallMoney } from '../dto/primitiveTypes';
 
 export type OrderDocument = HydratedDocument<Order>;
 
@@ -49,7 +50,7 @@ export class Order {
 
   @Prop({ type: Number, default: 0 })
   @IsNumber()
-  totalPrice!: number;
+  totalPrice!: SmallMoney;
 
   @Prop({ type: String, default: '' })
   @IsString()

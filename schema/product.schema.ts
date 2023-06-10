@@ -15,6 +15,7 @@ import {
   ProductAttributesDto,
   ProductItemDto,
 } from '../../shop_shared/dto/product/product.dto';
+import { SmallMoney } from '../dto/primitiveTypes';
 
 export type ProductDocument = HydratedDocument<Product>;
 
@@ -62,7 +63,7 @@ export class Product {
   @Prop({ type: Number, default: 0 })
   @IsInt()
   @Min(0)
-  price!: number;
+  price!: SmallMoney;
 
   @Prop({ type: String, default: '' })
   @IsString()
