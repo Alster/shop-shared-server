@@ -97,7 +97,7 @@ export class OrderService {
             item: CreateOrderItemDataDto,
           ): ProductItemDto | null => {
             const foundItem = product.items.find((candidate) => {
-              return Object.entries(item.attrs).every(([key, values]) => {
+              return Object.entries(item.attributes).every(([key, values]) => {
                 return values.every(
                   (v) =>
                     candidate.attributes[key] &&
