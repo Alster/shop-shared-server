@@ -15,5 +15,6 @@ export function mapOrderDocumentToOrderAdminDto(
     currency: orderDocument.currency,
     status: orderDocument.status,
     createDate: orderDocument.createDate.toISOString(),
+    statusHistory: orderDocument.statusHistory,
   };
 }

@@ -168,7 +168,18 @@ export class OrderService {
     id: string,
     status: OrderStatus,
   ): Promise<OrderDocument> {
-    await this.orderModel.updateOne({ _id: id }, { status: status });
+    await this.orderModel.updateOne(
+      { _id: id },
+      {
+        status: status,
+        $push: {
+          statusHistory: {
+            status: status,
+            date: new Date(),
+          },
+        },
+      },
+    );
     const order = await this.getOrder(id);
     if (!order) {
       throw new NotFoundException();

@@ -21,6 +21,11 @@ import { CURRENCY } from '../../shop-shared/constants/exchange';
 
 export type OrderDocument = HydratedDocument<Order>;
 
+export interface IStatusHistoryEntry {
+  status: OrderStatus;
+  date: Date;
+}
+
 @Schema({
   collection: 'order',
 })
@@ -64,6 +69,10 @@ export class Order {
   @Prop({ type: Date })
   @IsDate()
   createDate: Date = new Date();
+
+  @Prop({ type: Array, default: [] })
+  @IsArray()
+  statusHistory!: IStatusHistoryEntry[];
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
