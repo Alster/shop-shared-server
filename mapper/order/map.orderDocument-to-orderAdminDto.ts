@@ -1,5 +1,5 @@
 import { OrderDocument } from '../../schema/order.schema';
-import { OrderAdminDto } from '../../../shop_shared/dto/order/order.dto';
+import { OrderAdminDto } from '../../../shop-shared/dto/order/order.dto';
 
 export function mapOrderDocumentToOrderAdminDto(
   orderDocument: OrderDocument,

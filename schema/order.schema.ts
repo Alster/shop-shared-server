@@ -11,12 +11,13 @@ import {
   IsString,
   Length,
 } from 'class-validator';
-import { ORDER_STATUS, OrderStatus } from '../../shop_shared/constants/order';
+import { ORDER_STATUS, OrderStatus } from '../../shop-shared/constants/order';
 import {
   CreateOrderItemDataDto,
   DeliveryDataDto,
-} from '../../shop_shared/dto/order/create-order.dto';
-import { MoneySmall } from '../../shop_shared/dto/primitiveTypes';
+} from '../../shop-shared/dto/order/create-order.dto';
+import { MoneySmall } from '../../shop-shared/dto/primitiveTypes';
+import { CURRENCY } from '../../shop-shared/constants/exchange';
 
 export type OrderDocument = HydratedDocument<Order>;
 
@@ -54,7 +55,7 @@ export class Order {
 
   @Prop({ type: String, default: '' })
   @IsString()
-  currency!: string;
+  currency!: CURRENCY;
 
   @Prop({ type: String })
   @IsEnum(ORDER_STATUS)

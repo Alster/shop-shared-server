@@ -1,5 +1,5 @@
 import { OrderDocument } from '../../schema/order.schema';
-import { OrderDto } from '../../../shop_shared/dto/order/order.dto';
+import { OrderDto } from '../../../shop-shared/dto/order/order.dto';
 
 export function mapOrderDocumentToOrderDto(
   orderDocument: OrderDocument,

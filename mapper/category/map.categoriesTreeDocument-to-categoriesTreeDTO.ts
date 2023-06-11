@@ -7,7 +7,7 @@ import { ObjectId } from 'mongodb';
 import {
   CategoriesNodeDto,
   CategoriesTreeDto,
-} from '../../../shop_shared/dto/category/categories-tree.dto';
+} from '../../../shop-shared/dto/category/categories-tree.dto';
 
 function mapCategoryNodeToCategoriesNodeDTO(
   obj: CategoryNode,

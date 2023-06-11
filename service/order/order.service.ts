@@ -6,14 +6,14 @@ import { Product, ProductDocument } from '../../schema/product.schema';
 import {
   CreateOrderDto,
   CreateOrderItemDataDto,
-} from '../../../shop_shared/dto/order/create-order.dto';
+} from '../../../shop-shared/dto/order/create-order.dto';
 import {
   ORDER_STATUS,
   OrderStatus,
-} from '../../../shop_shared/constants/order';
-import { ProductItemDto } from '../../../shop_shared/dto/product/product.dto';
+} from '../../../shop-shared/constants/order';
+import { ProductItemDto } from '../../../shop-shared/dto/product/product.dto';
 import { PublicError } from '../../helpers/publicError';
-import { MoneySmall } from '../../../shop_shared/dto/primitiveTypes';
+import { MoneySmall } from '../../../shop-shared/dto/primitiveTypes';
 
 @Injectable()
 export class OrderService {
@@ -52,7 +52,9 @@ export class OrderService {
     };
   }
 
-  async createOrder(createOrderData: CreateOrderDto): Promise<OrderDocument> {
+  async createOrder(
+    createOrderData: CreateOrderDto,
+  ): Promise<[OrderDocument, MoneySmall, ProductDocument[]]> {
     this.logger.log('createOrder', createOrderData);
 
     if (!createOrderData.itemsData.length) {
@@ -63,10 +65,12 @@ export class OrderService {
 
     let order: OrderDocument[] | null = null;
     let error: Error | null = null;
+    let totalPrice: MoneySmall = 0;
+    let products: ProductDocument[] = [];
 
     try {
       await session.withTransaction(async () => {
-        const products: ProductDocument[] = await this.productModel
+        products = await this.productModel
           .find({
             _id: {
               $in: createOrderData.itemsData.map((item) => item.productId),
@@ -122,7 +126,7 @@ export class OrderService {
           await product.save({ session });
         }
 
-        const totalPrice: MoneySmall = products.reduce((acc, product) => {
+        totalPrice = products.reduce((acc, product) => {
           acc += product.price as number;
           return acc;
         }, 0);
@@ -157,7 +161,7 @@ export class OrderService {
     if (!order) {
       throw new Error('Impossible error');
     }
-    return order[0];
+    return [order[0], totalPrice, products];
   }
 
   async updateOrderStatus(

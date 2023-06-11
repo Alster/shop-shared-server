@@ -9,8 +9,8 @@ import { getModelToken } from '@nestjs/mongoose';
 import {
   CreateOrderDto,
   DeliveryNVOfficeDto,
-} from '../../../shop_shared/dto/order/create-order.dto';
-import { NOVA_POSHTA_DELIVERY_TYPE } from '../../../shop_shared/constants/checkout';
+} from '../../../shop-shared/dto/order/create-order.dto';
+import { NOVA_POSHTA_DELIVERY_TYPE } from '../../../shop-shared/constants/checkout';
 import { ObjectId } from 'mongodb';
 import { MockColor, MockSize } from '../product/mocks';
 import { ProductService } from '../product/product.service';
@@ -18,8 +18,8 @@ import {
   ItemAttribute,
   ItemAttributeDocument,
 } from '../../schema/item-attribute.schema';
-import { ATTRIBUTE_TYPE } from '../../../shop_shared/constants/product';
-import { ORDER_STATUS } from '../../../shop_shared/constants/order';
+import { ATTRIBUTE_TYPE } from '../../../shop-shared/constants/product';
+import { ORDER_STATUS } from '../../../shop-shared/constants/order';
 
 describe('OrderService', () => {
   let orderService: OrderService;

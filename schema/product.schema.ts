@@ -10,12 +10,12 @@ import {
   Min,
 } from 'class-validator';
 import { ObjectId } from 'mongodb';
-import { TranslatedText } from '../../shop_shared/dto/translated-text';
+import { TranslatedText } from '../../shop-shared/dto/translated-text';
 import {
   ProductAttributesDto,
   ProductItemDto,
-} from '../../shop_shared/dto/product/product.dto';
-import { MoneySmall } from '../../shop_shared/dto/primitiveTypes';
+} from '../../shop-shared/dto/product/product.dto';
+import { MoneySmall } from '../../shop-shared/dto/primitiveTypes';
 
 export type ProductDocument = HydratedDocument<Product>;
 

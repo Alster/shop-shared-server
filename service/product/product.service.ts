@@ -9,12 +9,12 @@ import {
 import { mapProductDocumentToProductAdminDto } from '../../mapper/product/map.productDocument-to-productAdminDto';
 import { ObjectId } from 'mongodb';
 import { Category, CategoryDocument } from '../../schema/category.schema';
-import { LanguageEnum } from '../../../shop_shared/constants/localization';
+import { LanguageEnum } from '../../../shop-shared/constants/localization';
 import { CreateProductRequestDto } from '../../dto/create-product.request.dto';
 import {
   ProductAdminDto,
   ProductAttributesDto,
-} from '../../../shop_shared/dto/product/product.dto';
+} from '../../../shop-shared/dto/product/product.dto';
 
 @Injectable()
 export class ProductService {

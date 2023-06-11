@@ -11,8 +11,8 @@ import {
 } from '../../schema/item-attribute.schema';
 import { ObjectId } from 'mongodb';
 import { MockColor, MockSize } from './mocks';
-import { ATTRIBUTE_TYPE } from '../../../shop_shared/constants/product';
-import { LanguageEnum } from '../../../shop_shared/constants/localization';
+import { ATTRIBUTE_TYPE } from '../../../shop-shared/constants/product';
+import { LanguageEnum } from '../../../shop-shared/constants/localization';
 
 describe('ProductService', () => {
   let service: ProductService;

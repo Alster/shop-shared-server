@@ -8,11 +8,11 @@ import {
   IsString,
   Length,
 } from 'class-validator';
-import { TranslatedText } from '../../shop_shared/dto/translated-text';
+import { TranslatedText } from '../../shop-shared/dto/translated-text';
 import {
   ATTRIBUTE_TYPE,
   AttributeType,
-} from '../../shop_shared/constants/product';
+} from '../../shop-shared/constants/product';
 
 export interface AttributeValueDto {
   key: string;

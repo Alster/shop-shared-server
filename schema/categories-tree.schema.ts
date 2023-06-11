@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { IsArray, IsBoolean, IsNumber, IsObject } from 'class-validator';
 import { ObjectId } from 'mongodb';
-import { TranslatedText } from '../../shop_shared/dto/translated-text';
+import { TranslatedText } from '../../shop-shared/dto/translated-text';
 
 export class CategoryNode {
   @Prop({ type: Object })
