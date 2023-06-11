@@ -158,8 +158,6 @@ export class OrderService {
         );
       });
     } catch (err) {
-      this.logger.error(`Error while creating order ${err.message}`);
-      this.logger.error(err.stack);
       error = err;
     } finally {
       await session.endSession();

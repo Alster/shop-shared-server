@@ -81,4 +81,4 @@ export class Order {
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
 
-OrderSchema.index({ invoiceId: 1 }, { unique: true });
+OrderSchema.index({ invoiceId: 1 }, {});
