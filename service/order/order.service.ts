@@ -14,6 +14,8 @@ import {
 import { ProductItemDto } from '../../../shop-shared/dto/product/product.dto';
 import { PublicError } from '../../helpers/publicError';
 import { MoneySmall } from '../../../shop-shared/dto/primitiveTypes';
+import { ExchangeState } from '../../../shop-exchange-shared/helpers';
+import { doExchange } from '../../../shop-exchange-shared/doExchange';
 
 @Injectable()
 export class OrderService {
@@ -54,6 +56,7 @@ export class OrderService {
 
   async createOrder(
     createOrderData: CreateOrderDto,
+    exchangeState: ExchangeState,
   ): Promise<[OrderDocument, MoneySmall, ProductDocument[]]> {
     this.logger.log('createOrder', createOrderData);
 
@@ -127,7 +130,13 @@ export class OrderService {
         }
 
         totalPrice = products.reduce((acc, product) => {
-          acc += product.price as number;
+          const exchanged = doExchange(
+            product.currency,
+            createOrderData.currency,
+            product.price,
+            exchangeState,
+          );
+          acc += exchanged as number;
           return acc;
         }, 0);
 
@@ -167,15 +176,19 @@ export class OrderService {
   async updateOrderStatus(
     id: string,
     status: OrderStatus,
+    additionalData: any = undefined,
   ): Promise<OrderDocument> {
+    const now = new Date();
     await this.orderModel.updateOne(
       { _id: id },
       {
         status: status,
+        lastStatusUpdateDate: now,
         $push: {
           statusHistory: {
             status: status,
-            date: new Date(),
+            date: now,
+            additionalData: additionalData,
           },
         },
       },
@@ -185,5 +198,20 @@ export class OrderService {
       throw new NotFoundException();
     }
     return order;
+  }
+
+  async setInvoiceId(id: string, invoiceId: string): Promise<void> {
+    await this.orderModel.updateOne(
+      {
+        _id: id,
+      },
+      {
+        invoiceId: invoiceId,
+      },
+    );
+  }
+
+  async getOrderByInvoiceId(invoiceId: string): Promise<OrderDocument | null> {
+    return this.orderModel.findOne({ invoiceId: invoiceId }).exec();
   }
 }

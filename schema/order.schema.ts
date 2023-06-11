@@ -18,13 +18,9 @@ import {
 } from '../../shop-shared/dto/order/create-order.dto';
 import { MoneySmall } from '../../shop-shared/dto/primitiveTypes';
 import { CURRENCY } from '../../shop-shared/constants/exchange';
+import { IStatusHistoryEntry } from '../../shop-shared/dto/order/IStatusHostoryEntry';
 
 export type OrderDocument = HydratedDocument<Order>;
-
-export interface IStatusHistoryEntry {
-  status: OrderStatus;
-  date: Date;
-}
 
 @Schema({
   collection: 'order',
@@ -73,6 +69,16 @@ export class Order {
   @Prop({ type: Array, default: [] })
   @IsArray()
   statusHistory!: IStatusHistoryEntry[];
+
+  @Prop({ type: Date })
+  @IsDate()
+  lastStatusUpdateDate: Date = new Date();
+
+  @Prop({ type: String, default: '' })
+  @IsString()
+  invoiceId?: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
+
+OrderSchema.index({ invoiceId: 1 }, { unique: true });

@@ -4,6 +4,7 @@ import {
   IsArray,
   IsBoolean,
   IsDate,
+  IsEnum,
   IsInt,
   IsObject,
   IsString,
@@ -16,6 +17,7 @@ import {
   ProductItemDto,
 } from '../../shop-shared/dto/product/product.dto';
 import { MoneySmall } from '../../shop-shared/dto/primitiveTypes';
+import { CURRENCY } from '../../shop-shared/constants/exchange';
 
 export type ProductDocument = HydratedDocument<Product>;
 
@@ -65,9 +67,9 @@ export class Product {
   @Min(0)
   price!: MoneySmall;
 
-  @Prop({ type: String, default: '' })
-  @IsString()
-  currency!: string;
+  @Prop({ type: String, default: CURRENCY.UAH })
+  @IsEnum(CURRENCY)
+  currency!: CURRENCY;
 
   @Prop({ type: Number, default: 0 })
   @IsInt()

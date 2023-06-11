@@ -56,7 +56,7 @@ export class UpdateProductRequestDto implements ProductAdminDto {
 
   @IsString()
   @IsEnum(CURRENCY)
-  currency!: string;
+  currency!: CURRENCY;
 
   @IsBoolean()
   active!: boolean;
