@@ -16,5 +16,8 @@ export function mapOrderDocumentToOrderAdminDto(
     status: orderDocument.status,
     createDate: orderDocument.createDate.toISOString(),
     statusHistory: orderDocument.statusHistory,
+    lastStatusUpdateDate: orderDocument.lastStatusUpdateDate,
+    invoiceId: orderDocument.invoiceId,
+    monoResponse: orderDocument.monoResponse,
   };
 }

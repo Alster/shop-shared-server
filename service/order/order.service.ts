@@ -198,7 +198,7 @@ export class OrderService {
     return order;
   }
 
-  async setInvoiceId(id: string, invoiceId: string): Promise<void> {
+  async setInvoice(id: string, invoiceId: string): Promise<void> {
     await this.orderModel.updateOne(
       {
         _id: id,

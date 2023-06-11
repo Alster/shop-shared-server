@@ -19,6 +19,7 @@ import {
 import { MoneySmall } from '../../shop-shared/dto/primitiveTypes';
 import { CURRENCY } from '../../shop-shared/constants/exchange';
 import { IStatusHistoryEntry } from '../../shop-shared/dto/order/IStatusHostoryEntry';
+import { IMonobankWebhookDto } from '../../shop-shared/dto/order/Monobank';
 
 export type OrderDocument = HydratedDocument<Order>;
 
@@ -77,6 +78,10 @@ export class Order {
   @Prop({ type: String, default: '' })
   @IsString()
   invoiceId?: string;
+
+  @Prop({ type: Object, default: null })
+  @IsObject()
+  monoResponse?: IMonobankWebhookDto;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
