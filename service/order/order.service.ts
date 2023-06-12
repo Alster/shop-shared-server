@@ -1,6 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
+import { v4 as uuid } from 'uuid';
 import { Order, OrderDocument } from '../../schema/order.schema';
 import { Product, ProductDocument } from '../../schema/product.schema';
 import {
@@ -195,7 +196,65 @@ export class OrderService {
     if (!order) {
       throw new NotFoundException();
     }
+
+    if (status === ORDER_STATUS.FAILED && order.isItemsReturned === false) {
+      await this.returnItems(id);
+    }
+
     return order;
+  }
+
+  async returnItems(id: string) {
+    const session = await this.connection.startSession();
+
+    try {
+      await session.withTransaction(async () => {
+        const order = await this.orderModel.findById(id).session(session);
+        if (!order) {
+          throw new NotFoundException();
+        }
+
+        if (order.isItemsReturned) {
+          return;
+        }
+
+        if (order.status !== ORDER_STATUS.FAILED) {
+          throw new PublicError('ORDER_STATUS_NOT_FAILED');
+        }
+
+        for (const item of order.itemsData) {
+          const product = await this.productModel
+            .findById(item.productId)
+            .session(session);
+          if (!product) {
+            throw new NotFoundException();
+          }
+          for (const _i of Array.from({ length: item.qty })) {
+            product.items.push({
+              attributes: item.attributes,
+              sku: uuid(),
+            });
+          }
+          product.markModified('items');
+          await product.save({ session });
+        }
+        await this.orderModel
+          .updateOne(
+            {
+              _id: order._id,
+            },
+            {
+              isItemsReturned: true,
+            },
+          )
+          .session(session);
+      });
+    } catch (err) {
+      this.logger.error(err);
+      this.logger.error(err.stack);
+    } finally {
+      await session.endSession();
+    }
   }
 
   async setInvoice(id: string, invoiceId: string): Promise<void> {
@@ -211,5 +270,25 @@ export class OrderService {
 
   async getOrderByInvoiceId(invoiceId: string): Promise<OrderDocument | null> {
     return this.orderModel.findOne({ invoiceId: invoiceId }).exec();
+  }
+
+  async cancelOrder(id: string): Promise<void> {
+    const order = await this.getOrder(id);
+    if (!order) {
+      throw new NotFoundException();
+    }
+    if (
+      ([ORDER_STATUS.FINISHED, ORDER_STATUS.FAILED] as OrderStatus[]).includes(
+        order.status,
+      )
+    ) {
+      throw new PublicError('ORDER_ALREADY_FINISHED');
+    }
+    if (order.status === ORDER_STATUS.PAID) {
+      throw new PublicError('ORDER_ALREADY_PAID');
+    }
+    await this.updateOrderStatus(id, ORDER_STATUS.FAILED, {
+      reason: 'CANCELED_BY_USER',
+    });
   }
 }

@@ -2,6 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import {
   IsArray,
+  IsBoolean,
   IsDate,
   IsEnum,
   IsMobilePhone,
@@ -82,6 +83,10 @@ export class Order {
   @Prop({ type: Object, default: null })
   @IsObject()
   monoResponse?: IMonobankWebhookDto;
+
+  @Prop({ type: Boolean, default: false })
+  @IsBoolean()
+  isItemsReturned?: boolean;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
