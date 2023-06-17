@@ -1,0 +1,91 @@
+{
+  "title": {
+    "en": "Style",
+    "ua": "Стиль"
+  },
+  "description": {
+    "en": "Style of the cloches",
+    "ua": "Стан"
+  },
+  "key": "style",
+  "type": "select",
+  "values": [
+    {
+      "key": "casual",
+      "title": {
+        "en": "Casual",
+        "ua": "Повсякденний"
+      }
+    },
+    {
+      "key": "elegant",
+      "title": {
+        "en": "Elegant",
+        "ua": "Елегантний"
+      }
+    },
+    {
+      "key": "sport",
+      "title": {
+        "en": "Sport",
+        "ua": "Спортивний"
+      }
+    },
+    {
+"key": "classic",
+      "title": {
+        "en": "Classic",
+        "ua": "Класичний"
+      }
+    },
+    {
+      "key": "business",
+      "title": {
+        "en": "Business",
+        "ua": "Діловий"
+      }
+    },
+    {
+      "key": "military",
+      "title": {
+        "en": "Military",
+        "ua": "Військовий"
+      }
+    },
+    {
+      "key": "retro",
+      "title": {
+        "en": "Retro",
+        "ua": "Ретро"
+      }
+    },
+    {
+      "key": "vintage",
+      "title": {
+        "en": "Vintage",
+        "ua": "Вінтажний"
+      }
+    },
+    {
+      "key": "modern",
+      "title": {
+        "en": "Modern",
+        "ua": "Сучасний"
+      }
+    },
+    {
+      "key": "futuristic",
+      "title": {
+        "en": "Futuristic",
+        "ua": "Футуристичний"
+      }
+    },
+    {
+      "key": "other",
+      "title": {
+        "en": "Other",
+        "ua": "Інший"
+      }
+    }
+  ]
+}
