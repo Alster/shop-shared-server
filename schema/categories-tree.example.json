@@ -11,7 +11,44 @@
         "ua": "Одяг для жінок"
       },
       "sort": 1,
-      "children": [],
+      "children": [
+        {
+          "_id": "1f1f1f1f1f1f1f1f1f1f1f1f",
+          "title": {
+            "en": "Dresses",
+            "ua": "Сукні"
+          },
+          "description": {
+            "en": "Dresses",
+            "ua": "Сукні"
+          },
+          "sort": 1
+        },
+        {
+          "_id": "2f2f2f2f2f2f2f2f2f2f2f2f",
+          "title": {
+            "en": "Skirts",
+            "ua": "Спідниці"
+          },
+          "description": {
+            "en": "Skirts",
+            "ua": "Спідниці"
+          },
+          "sort": 2
+        },
+        {
+          "_id": "4f4f4f4f4f4f4f4f4f4f4f4f",
+          "title": {
+            "en": "Trousers",
+            "ua": "Штани"
+          },
+          "description": {
+            "en": "Trousers",
+            "ua": "Штани"
+          },
+          "sort": 4
+        }
+      ],
       "active": true
     },
     {
