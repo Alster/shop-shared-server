@@ -100,12 +100,6 @@ export class ProductService {
     product.categoriesAll = categories.map((category) =>
       [...category.parents, category.publicId].join('/'),
     );
-    product.categoriesAll = [
-      ...new Set([
-        ...categories.map((category) => category.publicId),
-        ...categories.map((category) => category.parents).flat(),
-      ]),
-    ];
     product.characteristics = updateData.characteristics;
     product.items = updateData.items;
     product.price = updateData.price;
