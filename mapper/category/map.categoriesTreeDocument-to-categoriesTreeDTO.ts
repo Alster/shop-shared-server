@@ -14,6 +14,7 @@ function mapCategoryNodeToCategoriesNodeDTO(
 ): CategoriesNodeDto {
   return {
     id: obj._id.toString(),
+    publicId: obj.publicId,
     title: obj.title,
     description: obj.title,
     children: obj.children.map((child) =>
@@ -37,6 +38,7 @@ export function mapCategoriesNodeDTOToCategoryNode(
 ): CategoryNode {
   return {
     _id: new ObjectId(obj.id),
+    publicId: obj.publicId,
     title: obj.title,
     description: obj.title,
     children: obj.children.map((child) =>
