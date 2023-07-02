@@ -39,7 +39,7 @@ export class Product {
 
   @Prop({ type: Array, default: [] })
   @IsArray()
-  categories!: string[];
+  categories!: ObjectId[];
 
   @Prop({ type: Array, default: [] })
   @IsArray()

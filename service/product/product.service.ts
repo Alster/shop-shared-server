@@ -77,9 +77,13 @@ export class ProductService {
     const categories = await this.categoryModel
       .find(
         {
-          publicId: { $in: updateData.categories },
+          _id: {
+            $in: updateData.categories
+              .filter((v) => ObjectId.isValid(v))
+              .map((v) => new ObjectId(v)),
+          },
         },
-        { parents: true },
+        { parents: true, publicId: true },
       )
       .exec();
 
@@ -89,7 +93,10 @@ export class ProductService {
     }
     product.title = updateData.title;
     product.description = updateData.description;
-    product.categories = updateData.categories;
+    product.categories = updateData.categories
+      .filter((v) => ObjectId.isValid(v))
+      .map((v) => new ObjectId(v));
+    console.log('categories', JSON.stringify(categories, null, 2));
     product.categoriesAll = [
       ...new Set([
         ...categories.map((category) => category.publicId),
