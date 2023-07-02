@@ -97,10 +97,16 @@ export class ProductService {
     product.categories = updateData.categories
       .filter((v) => ObjectId.isValid(v))
       .map((v) => new ObjectId(v));
+
     console.log('categories', JSON.stringify(categories, null, 2));
-    product.categoriesAll = categories.map((category) =>
-      [...category.parents, category.publicId].join('/'),
-    );
+    product.categoriesAll = categories
+      .map((category) =>
+        Array.from({ length: category.parents.length + 1 }).map((_, i) =>
+          [...category.parents, category.publicId].splice(0, i + 1).join('/'),
+        ),
+      )
+      .flat();
+
     product.characteristics = updateData.characteristics;
     product.items = updateData.items;
     product.price = updateData.price;
