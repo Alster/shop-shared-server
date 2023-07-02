@@ -115,6 +115,16 @@ export class ProductService {
     return await this.productModel.findById(id).exec();
   }
 
+  public async getProductByPublicId(
+    publicId: string,
+  ): Promise<ProductDocument | null> {
+    return await this.productModel
+      .findOne({
+        publicId: publicId,
+      })
+      .exec();
+  }
+
   public async deleteProduct(id: string): Promise<void> {
     await this.productModel.findByIdAndDelete(id).exec();
   }
@@ -136,6 +146,7 @@ export class ProductService {
     const getProducts = async () =>
       this.productModel
         .find(query, {
+          publicId: 1,
           [`title.${lang}`]: 1,
           [`description.${lang}`]: 1,
           categories: 1,
