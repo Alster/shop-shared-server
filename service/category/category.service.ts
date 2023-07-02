@@ -6,10 +6,7 @@ import {
   CategoriesTreeDocument,
   CategoryNode,
 } from '../../schema/categories-tree.schema';
-import {
-  Category,
-  CategoryDocument,
-} from '../../schema/category.schema';
+import { Category, CategoryDocument } from '../../schema/category.schema';
 
 @Injectable()
 export class CategoryService {
@@ -72,6 +69,7 @@ export class CategoryService {
     for (const category of categoriesTree) {
       categories.push({
         _id: category._id,
+        publicId: category.publicId,
         title: category.title,
         description: category.description,
         children: category.children.map((child) => child._id),

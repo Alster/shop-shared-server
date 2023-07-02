@@ -8,6 +8,7 @@ export function mapCategoryToCategoryDto(
 ): CategoryDto {
   return {
     id: obj._id.toString(),
+    publicId: obj.publicId,
     title: obj.title[language],
     description: obj.title[language],
     children: obj.children.map((id) => id.toString()),
