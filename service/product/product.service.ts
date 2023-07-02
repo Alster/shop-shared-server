@@ -77,7 +77,7 @@ export class ProductService {
     const categories = await this.categoryModel
       .find(
         {
-          _id: { $in: updateData.categories.map((id) => new ObjectId(id)) },
+          publicId: { $in: updateData.categories },
         },
         { parents: true },
       )
@@ -89,10 +89,10 @@ export class ProductService {
     }
     product.title = updateData.title;
     product.description = updateData.description;
-    product.categories = updateData.categories.map((id) => new ObjectId(id));
+    product.categories = updateData.categories;
     product.categoriesAll = [
       ...new Set([
-        ...categories.map((category) => category._id),
+        ...categories.map((category) => category.publicId),
         ...categories.map((category) => category.parents).flat(),
       ]),
     ];

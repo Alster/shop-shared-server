@@ -39,11 +39,11 @@ export class Product {
 
   @Prop({ type: Array, default: [] })
   @IsArray()
-  categories!: ObjectId[];
+  categories!: string[];
 
   @Prop({ type: Array, default: [] })
   @IsArray()
-  categoriesAll!: ObjectId[];
+  categoriesAll!: string[];
 
   @Prop({ type: Object, default: {} })
   @IsObject()

@@ -72,8 +72,8 @@ export class CategoryService {
         publicId: category.publicId,
         title: category.title,
         description: category.description,
-        children: category.children.map((child) => child._id),
-        parents: parents.map((parent) => parent._id),
+        children: category.children.map((child) => child.publicId),
+        parents: parents.map((parent) => parent.publicId),
         sort: category.sort,
       });
       categories.push(

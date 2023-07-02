@@ -27,11 +27,11 @@ export class Category {
 
   @Prop({ type: Array, default: [] })
   @IsArray()
-  children!: ObjectId[];
+  children!: string[];
 
   @Prop({ type: Array, default: [] })
   @IsArray()
-  parents!: ObjectId[];
+  parents!: string[];
 
   @Prop({ type: Number })
   @IsNumber()
