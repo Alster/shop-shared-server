@@ -97,6 +97,9 @@ export class ProductService {
       .filter((v) => ObjectId.isValid(v))
       .map((v) => new ObjectId(v));
     console.log('categories', JSON.stringify(categories, null, 2));
+    product.categoriesAll = categories.map((category) =>
+      [...category.parents, category.publicId].join('/'),
+    );
     product.categoriesAll = [
       ...new Set([
         ...categories.map((category) => category.publicId),
