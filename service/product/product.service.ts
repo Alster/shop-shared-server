@@ -123,7 +123,7 @@ export class ProductService {
   ): Promise<{
     products: ProductDocument[];
     total: number;
-    filters: { [key: string]: Set<string> };
+    filters: { [key: string]: string[] };
     categories: string[];
   }> {
     console.log('Query:', JSON.stringify(query, null, 2));
