@@ -6,6 +6,7 @@ export function mapProductDocumentToProductAdminDto(
 ): ProductAdminDto {
   return {
     id: obj._id.toString(),
+    publicId: obj.publicId,
     title: obj.title,
     description: obj.description,
     categories: obj.categories.map((category) => category.toString()),

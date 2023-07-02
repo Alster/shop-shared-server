@@ -25,6 +25,10 @@ export type ProductDocument = HydratedDocument<Product>;
   collection: 'product',
 })
 export class Product {
+  @Prop({ type: String })
+  @IsString()
+  publicId!: string;
+
   @Prop({ type: Object, default: {} })
   @IsObject()
   title!: TranslatedText;

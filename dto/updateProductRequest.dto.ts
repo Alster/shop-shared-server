@@ -21,6 +21,9 @@ export class UpdateProductRequestDto implements ProductAdminDto {
   @IsString()
   id?: string;
 
+  @IsString()
+  publicId!: string;
+
   @IsObject()
   title!: TranslatedText;
 

@@ -8,6 +8,7 @@ export function mapProductDocumentToProductDto(
 ): ProductDto {
   return {
     id: obj._id.toString(),
+    publicId: obj.publicId,
     title: getTranslation(obj.title, lang),
     description: getTranslation(obj.description, lang),
     categories: obj.categories.map((category) => category.toString()),
