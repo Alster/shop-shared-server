@@ -165,10 +165,23 @@ export class ProductService {
         .limit(limit)
         .exec();
     const getCount = async () => this.productModel.countDocuments(query);
+    const aggregationQuery = {
+      ...(query.categoriesAll ? { categoriesAll: query.categoriesAll } : {}),
+      active: true,
+      quantity: { $gt: 0 },
+    };
+    console.log(
+      'Aggregation query:',
+      JSON.stringify(aggregationQuery, null, 2),
+    );
+    console.log(
+      'query.categories',
+      JSON.stringify(query.categoriesAll, null, 2),
+    );
     const getAggregation = async () => {
       const [result] = await this.productModel.aggregate([
         {
-          $match: query,
+          $match: aggregationQuery,
         },
         {
           $group: {
