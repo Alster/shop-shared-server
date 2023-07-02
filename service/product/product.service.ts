@@ -91,6 +91,7 @@ export class ProductService {
     if (!product) {
       return null;
     }
+    product.publicId = updateData.publicId;
     product.title = updateData.title;
     product.description = updateData.description;
     product.categories = updateData.categories
