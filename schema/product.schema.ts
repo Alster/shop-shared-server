@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, IndexDirection } from 'mongoose';
 import {
   IsArray,
   IsBoolean,
@@ -18,6 +18,7 @@ import {
 } from '../../shop-shared/dto/product/product.dto';
 import { MoneySmall } from '../../shop-shared/dto/primitiveTypes';
 import { CURRENCY } from '../../shop-shared/constants/exchange';
+import { LanguageEnum } from '../../shop-shared/constants/localization';
 
 export type ProductDocument = HydratedDocument<Product>;
 
@@ -94,6 +95,18 @@ export class Product {
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);
+
+const textTitleIndex: Record<string, IndexDirection> = Object.fromEntries(
+  Object.values(LanguageEnum).map((lang) => [`title.${lang}`, 'text']),
+);
+const textDescriptionIndex: Record<string, IndexDirection> = Object.fromEntries(
+  Object.values(LanguageEnum).map((lang) => [`description.${lang}`, 'text']),
+);
+const textIndex: Record<string, IndexDirection> = {
+  ...textTitleIndex,
+  ...textDescriptionIndex,
+};
+ProductSchema.index(textIndex, { name: 'text' });
 
 ProductSchema.pre('save', function (next) {
   this.quantity = this.items.length;
