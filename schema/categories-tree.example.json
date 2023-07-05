@@ -4,11 +4,13 @@
       "_id": "5f5f5f5f5f5f5f5f5f5f5f5f",
       "title": {
         "en": "For woman",
-        "ua": "Для жінок"
+        "ua": "Для жінок",
+        "ru": "Для женщин"
       },
       "description": {
         "en": "Clothes for woman",
-        "ua": "Одяг для жінок"
+        "ua": "Одяг для жінок",
+        "ru": "Одежда для женщин"
       },
       "sort": 1,
       "children": [
@@ -16,11 +18,13 @@
           "_id": "1f1f1f1f1f1f1f1f1f1f1f1f",
           "title": {
             "en": "Dresses",
-            "ua": "Сукні"
+            "ua": "Сукні",
+            "ru": "Платья"
           },
           "description": {
             "en": "Dresses",
-            "ua": "Сукні"
+            "ua": "Сукні",
+            "ru": "Платья"
           },
           "sort": 1
         },
@@ -28,11 +32,13 @@
           "_id": "2f2f2f2f2f2f2f2f2f2f2f2f",
           "title": {
             "en": "Skirts",
-            "ua": "Спідниці"
+            "ua": "Спідниці",
+            "ru": "Юбки"
           },
           "description": {
             "en": "Skirts",
-            "ua": "Спідниці"
+            "ua": "Спідниці",
+            "ru": "Юбки"
           },
           "sort": 2
         },
@@ -40,11 +46,13 @@
           "_id": "4f4f4f4f4f4f4f4f4f4f4f4f",
           "title": {
             "en": "Trousers",
-            "ua": "Штани"
+            "ua": "Штани",
+            "ru": "Брюки"
           },
           "description": {
             "en": "Trousers",
-            "ua": "Штани"
+            "ua": "Штани",
+            "ru": "Брюки"
           },
           "sort": 4
         }
@@ -55,11 +63,13 @@
       "_id": "3f3f3f3f3f3f3f3f3f3f3f3f",
       "title": {
         "en": "For man",
-        "ua": "Для чоловіків"
+        "ua": "Для чоловіків",
+        "ru": "Для мужчин"
       },
       "description": {
         "en": "Clothes for man",
-        "ua": "Одяг для чоловіків"
+        "ua": "Одяг для чоловіків",
+        "ru": "Одежда для мужчин"
       },
       "sort": 2,
       "children": [],

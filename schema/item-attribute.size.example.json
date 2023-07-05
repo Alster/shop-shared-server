@@ -1,11 +1,13 @@
 {
   "title": {
     "en": "Size",
-    "ua": "Розмір"
+    "ua": "Розмір",
+    "ru": "Размер"
   },
   "description": {
     "en": "Size",
-    "ua": "Розмір"
+    "ua": "Розмір",
+    "ru": "Размер"
   },
   "key": "size",
   "type": "select",
@@ -14,35 +16,40 @@
       "key": "s",
       "title": {
         "en": "S",
-        "ua": "S"
+        "ua": "S",
+        "ru": "S"
       }
     },
     {
       "key": "m",
       "title": {
         "en": "M",
-        "ua": "M"
+        "ua": "M",
+        "ru": "M"
       }
     },
     {
       "key": "l",
       "title": {
         "en": "L",
-        "ua": "L"
+        "ua": "L",
+        "ru": "L"
       }
     },
     {
       "key": "xl",
       "title": {
-          "en": "XL",
-          "ua": "XL"
+        "en": "XL",
+        "ua": "XL",
+        "ru": "XL"
       }
     },
     {
       "key": "xxl",
       "title": {
         "en": "XXL",
-        "ua": "XXL"
+        "ua": "XXL",
+        "ru": "XXL"
       }
     }
   ]

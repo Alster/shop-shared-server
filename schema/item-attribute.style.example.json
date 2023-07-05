@@ -1,11 +1,13 @@
 {
   "title": {
     "en": "Style",
-    "ua": "Стиль"
+    "ua": "Стиль",
+    "ru": "Стиль"
   },
   "description": {
     "en": "Style of the cloches",
-    "ua": "Стан"
+    "ua": "Стиль одягу",
+    "ru": "Стиль одежды"
   },
   "key": "style",
   "type": "select",
@@ -14,77 +16,88 @@
       "key": "casual",
       "title": {
         "en": "Casual",
-        "ua": "Повсякденний"
+        "ua": "Повсякденний",
+        "ru": "Повседневный"
       }
     },
     {
       "key": "elegant",
       "title": {
         "en": "Elegant",
-        "ua": "Елегантний"
+        "ua": "Елегантний",
+        "ru": "Элегантный"
       }
     },
     {
       "key": "sport",
       "title": {
         "en": "Sport",
-        "ua": "Спортивний"
+        "ua": "Спортивний",
+        "ru": "Спортивный"
       }
     },
     {
 "key": "classic",
       "title": {
         "en": "Classic",
-        "ua": "Класичний"
+        "ua": "Класичний",
+        "ru": "Классический"
       }
     },
     {
       "key": "business",
       "title": {
         "en": "Business",
-        "ua": "Діловий"
+        "ua": "Діловий",
+        "ru": "Деловой"
       }
     },
     {
       "key": "military",
       "title": {
         "en": "Military",
-        "ua": "Військовий"
+        "ua": "Військовий",
+        "ru": "Военный"
       }
     },
     {
       "key": "retro",
       "title": {
         "en": "Retro",
-        "ua": "Ретро"
+        "ua": "Ретро",
+        "ru": "Ретро"
       }
     },
     {
       "key": "vintage",
       "title": {
         "en": "Vintage",
-        "ua": "Вінтажний"
+        "ua": "Вінтажний",
+        "ru": "Винтажный"
       }
     },
     {
       "key": "modern",
       "title": {
         "en": "Modern",
-        "ua": "Сучасний"
+        "ua": "Сучасний",
+        "ru": "Современный"
       }
     },
     {
       "key": "futuristic",
       "title": {
         "en": "Futuristic",
-        "ua": "Футуристичний"
+        "ua": "Футуристичний",
+        "ru": "Футуристический"
       }
     },
     {
       "key": "other",
       "title": {
         "en": "Other",
-        "ua": "Інший"
+        "ua": "Інший",
+        "ru": "Другой"
       }
     }
   ]

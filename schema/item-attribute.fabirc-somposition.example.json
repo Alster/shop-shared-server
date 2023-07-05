@@ -1,11 +1,13 @@
 {
   "title": {
     "en": "Fabric Composition",
-    "ua": "Склад тканини"
+    "ua": "Склад тканини",
+    "ru": "Состав ткани"
   },
   "description": {
     "en": "Fabric Composition",
-    "ua": "Склад тканини"
+    "ua": "Склад тканини",
+    "ru": "Состав ткани"
   },
   "key": "fabricComposition",
   "type": "select",
@@ -14,126 +16,144 @@
       "key": "cotton",
       "title": {
         "en": "Cotton",
-        "ua": "Бавовна"
+        "ua": "Бавовна",
+        "ru": "Хлопок"
       }
     },
     {
       "key": "viscose",
       "title": {
         "en": "Viscose",
-        "ua": "Віскоза"
+        "ua": "Віскоза",
+        "ru": "Вискоза"
       }
     },
     {
       "key": "polyester",
       "title": {
         "en": "Polyester",
-        "ua": "Поліестер"
+        "ua": "Поліестер",
+        "ru": "Полиэстер"
       }
     },
     {
       "key": "wool",
       "title": {
         "en": "Wool",
-        "ua": "Вовна"
+        "ua": "Вовна",
+        "ru": "Шерсть"
       }
     },
     {
       "key": "silk",
       "title": {
         "en": "Silk",
-        "ua": "Шовк"
+        "ua": "Шовк",
+        "ru": "Шелк"
       }
     },
     {
       "key": "linen",
       "title": {
         "en": "Linen",
-        "ua": "Льон"
+        "ua": "Льон",
+        "ru": "Лён"
       }
     },
     {
       "key": "polyamide",
       "title": {
         "en": "Polyamide",
-        "ua": "Поліамід"
+        "ua": "Поліамід",
+        "ru": "Полиамид"
       }
     },
     {
       "key": "elastane",
       "title": {
         "en": "Elastane",
-        "ua": "Еластан"
+        "ua": "Еластан",
+        "ru": "Эластан"
       }
     },
     {
       "key": "acrylic",
       "title": {
         "en": "Acrylic",
-        "ua": "Акрил"
+        "ua": "Акрил",
+        "ru": "Акрил"
       }
     },
     {
       "key": "polyurethane",
       "title": {
         "en": "Polyurethane",
-        "ua": "Поліуретан"
+        "ua": "Поліуретан",
+        "ru": "Полиуретан"
       }
     },
     {
       "key": "polypropylene",
       "title": {
         "en": "Polypropylene",
-        "ua": "Поліпропілен"
+        "ua": "Поліпропілен",
+        "ru": "Полипропилен"
       }
     },
     {
       "key": "modal",
       "title": {
         "en": "Modal",
-        "ua": "Модал"
+        "ua": "Модал",
+        "ru": "Модал"
       }
     },
     {
       "key": "cashmere",
       "title": {
         "en": "Cashmere",
-        "ua": "Кашемір"
+        "ua": "Кашемір",
+        "ru": "Кашемир"
       }
     },
     {
       "key": "angora",
       "title": {
         "en": "Angora",
-        "ua": "Ангора"
+        "ua": "Ангора",
+        "ru": "Ангора"
       }
     },
     {
       "key": "alpaca",
       "title": {
         "en": "Alpaca",
-        "ua": "Альпака"
+        "ua": "Альпака",
+        "ru": "Альпака"
       }
     },
     {
       "key": "mohair",
       "title": {
         "en": "Mohair",
-        "ua": "Мохер"
+        "ua": "Мохер",
+        "ru": "Мохер"
       }
     },
     {
       "key": "nylon",
       "title": {
         "en": "Nylon",
-        "ua": "Нейлон"
+        "ua": "Нейлон",
+        "ru": "Нейлон"
       }
     },
     {
       "key": "polyethylene",
       "title": {
         "en": "Polyethylene",
-        "ua": "Поліетилен"
+        "ua": "Поліетилен",
+        "ru": "Полиэтилен"
       }
     }
   ]
