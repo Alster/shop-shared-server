@@ -1,9 +1,7 @@
 import {
-  CategoriesTree,
   CategoriesTreeDocument,
   CategoryNode,
 } from '../../schema/categories-tree.schema';
-import { ObjectId } from 'mongodb';
 import {
   CategoriesNodeDto,
   CategoriesTreeDto,
@@ -11,14 +9,15 @@ import {
 
 function mapCategoryNodeToCategoriesNodeDTO(
   obj: CategoryNode,
+  lang: string,
 ): CategoriesNodeDto {
   return {
     id: obj._id.toString(),
     publicId: obj.publicId,
-    title: obj.title,
-    description: obj.title,
+    title: obj.title[lang],
+    description: obj.title[lang],
     children: obj.children.map((child) =>
-      mapCategoryNodeToCategoriesNodeDTO(child),
+      mapCategoryNodeToCategoriesNodeDTO(child, lang),
     ),
     sort: obj.sort,
     active: obj.active,
@@ -27,32 +26,9 @@ function mapCategoryNodeToCategoriesNodeDTO(
 
 export function mapCategoriesTreeDocumentToCategoriesTreeDTO(
   obj: CategoriesTreeDocument,
+  lang: string,
 ): CategoriesTreeDto {
   return {
-    root: obj.root.map(mapCategoryNodeToCategoriesNodeDTO),
-  };
-}
-
-export function mapCategoriesNodeDTOToCategoryNode(
-  obj: CategoriesNodeDto,
-): CategoryNode {
-  return {
-    _id: new ObjectId(obj.id),
-    publicId: obj.publicId,
-    title: obj.title,
-    description: obj.title,
-    children: obj.children.map((child) =>
-      mapCategoriesNodeDTOToCategoryNode(child),
-    ),
-    sort: obj.sort,
-    active: obj.active,
-  };
-}
-
-export function mapCategoriesTreeDTOToCategories(
-  obj: CategoryNode[],
-): CategoriesTree {
-  return {
-    root: obj,
+    root: obj.root.map((o) => mapCategoryNodeToCategoriesNodeDTO(o, lang)),
   };
 }
