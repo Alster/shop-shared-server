@@ -108,6 +108,20 @@ const textIndex: Record<string, IndexDirection> = {
 };
 ProductSchema.index(textIndex, { name: 'text' });
 
+ProductSchema.index(
+  {
+    // Equality field
+    active: 1,
+    // Sort field
+    createDate: -1,
+    // Range field
+    quantity: 1,
+    categoriesAll: 1,
+    'attrs.$**': 1,
+  },
+  { name: 'catalogSearch_orderByDate' },
+);
+
 ProductSchema.pre('save', function (next) {
   this.quantity = this.items.length;
 
