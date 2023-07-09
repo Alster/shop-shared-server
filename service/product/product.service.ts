@@ -146,6 +146,8 @@ export class ProductService {
     total: number;
     filters: { [key: string]: string[] };
     categories: string[];
+    priceMin: number;
+    priceMax: number;
   }> {
     console.log('Query:', JSON.stringify(query, null, 2));
     console.log('Sort:', JSON.stringify(sort, null, 2));
@@ -207,6 +209,12 @@ export class ProductService {
                 in: { $setUnion: ['$$value', '$$this'] },
               },
             },
+            priceMin: {
+              $min: '$price',
+            },
+            priceMax: {
+              $max: '$price',
+            },
           },
         },
       ]);
@@ -223,6 +231,8 @@ export class ProductService {
       total: totalCount,
       filters: aggregatedResult?.attrs || {},
       categories: aggregatedResult?.categories || [],
+      priceMin: aggregatedResult?.priceMin || 0,
+      priceMax: aggregatedResult?.priceMax || 0,
     };
   }
 
