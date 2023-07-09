@@ -228,11 +228,6 @@ export class ProductService {
       getCount(),
     ]);
 
-    console.log(
-      'Aggregation result:',
-      JSON.stringify(aggregatedResult, null, 2),
-    );
-
     return {
       products: products,
       total: totalCount,
