@@ -197,6 +197,12 @@ export class ProductService {
               },
             },
             categories: { $addToSet: `$categories` },
+            priceMin: {
+              $min: '$price',
+            },
+            priceMax: {
+              $max: '$price',
+            },
           },
         },
         {
@@ -209,12 +215,8 @@ export class ProductService {
                 in: { $setUnion: ['$$value', '$$this'] },
               },
             },
-            priceMin: {
-              $min: '$price',
-            },
-            priceMax: {
-              $max: '$price',
-            },
+            priceMin: 1,
+            priceMax: 1,
           },
         },
       ]);
@@ -225,6 +227,11 @@ export class ProductService {
       getAggregation(),
       getCount(),
     ]);
+
+    console.log(
+      'Aggregation result:',
+      JSON.stringify(aggregatedResult, null, 2),
+    );
 
     return {
       products: products,
