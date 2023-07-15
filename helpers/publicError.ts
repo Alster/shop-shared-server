@@ -1,5 +1,9 @@
 export class PublicError extends Error {
-  constructor(message: string, public readonly code: number = 500) {
-    super(message);
-  }
+	constructor(
+		message: string,
+		public readonly code: number = 500,
+	) {
+		super(message);
+		this.name = "PublicError";
+	}
 }

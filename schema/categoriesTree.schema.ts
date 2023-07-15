@@ -1,17 +1,12 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { IsArray, IsNumber, IsObject, IsString } from "class-validator";
+import { IsArray, IsBoolean, IsNumber, IsObject, IsString } from "class-validator";
 import { ObjectId } from "mongodb";
 import { HydratedDocument } from "mongoose";
 
 import { TranslatedText } from "../../shop-shared/dto/translatedText";
 
-export type CategoryDocument = HydratedDocument<Category>;
-
-@Schema({
-	collection: "category",
-})
-export class Category {
-	@Prop({ type: ObjectId })
+export class CategoryNode {
+	@Prop({ type: Object })
 	@IsString()
 	_id!: ObjectId;
 
@@ -28,16 +23,27 @@ export class Category {
 	description!: TranslatedText;
 
 	@Prop({ type: Array, default: [] })
-	@IsArray()
-	children!: string[];
-
-	@Prop({ type: Array, default: [] })
-	@IsArray()
-	parents!: string[];
+	@IsArray({ each: true })
+	children!: CategoryNode[];
 
 	@Prop({ type: Number })
 	@IsNumber()
 	sort!: number;
+
+	@Prop({ type: Boolean })
+	@IsBoolean()
+	active!: boolean;
 }
 
-export const CategorySchema = SchemaFactory.createForClass(Category);
+export type CategoriesTreeDocument = HydratedDocument<CategoriesTree>;
+
+@Schema({
+	collection: "categories_tree",
+})
+export class CategoriesTree {
+	@Prop({ type: Object, default: {} })
+	@IsObject()
+	root!: CategoryNode[];
+}
+
+export const CategoriesTreeSchema = SchemaFactory.createForClass(CategoriesTree);
