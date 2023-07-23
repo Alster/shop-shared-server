@@ -26,7 +26,7 @@ export function mapCategoriesTreeDocumentToCategoriesTreeAdminDto(
 	object: CategoriesTreeDocument,
 ): CategoriesTreeAdminDto {
 	return {
-		root: object.root.map(mapCategoryNodeToCategoriesNodeDTO),
+		root: object.root.map((node) => mapCategoryNodeToCategoriesNodeDTO(node)),
 	};
 }
 
