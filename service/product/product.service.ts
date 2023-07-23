@@ -62,7 +62,7 @@ export class ProductService {
 
 	public async updateProduct(
 		id: string,
-		updateData: ProductAdminDto,
+		updateData: Omit<ProductAdminDto, "createDate">,
 	): Promise<ProductDocument | undefined> {
 		const categories = await this.categoryModel
 			.find(

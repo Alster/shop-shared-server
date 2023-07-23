@@ -2,7 +2,6 @@ import { Optional } from "@nestjs/common";
 import {
 	IsArray,
 	IsBoolean,
-	IsDateString,
 	IsEnum,
 	IsInt,
 	IsNumber,
@@ -20,7 +19,7 @@ import {
 } from "../../shop-shared/dto/product/product.dto";
 import { TranslatedText } from "../../shop-shared/dto/translatedText";
 
-export class UpdateProductRequestDto implements ProductAdminDto {
+export class UpdateProductRequestDto implements Omit<ProductAdminDto, "createDate"> {
 	@IsString()
 	@Optional()
 	id?: string;
@@ -70,7 +69,4 @@ export class UpdateProductRequestDto implements ProductAdminDto {
 
 	@IsBoolean()
 	active!: boolean;
-
-	@IsDateString()
-	createDate!: string;
 }
