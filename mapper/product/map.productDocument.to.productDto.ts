@@ -16,6 +16,7 @@ export function mapProductDocumentToProductDto(object: ProductDocument, lang: st
 		quantity: object.quantity,
 		price: object.price,
 		discount: object.discount,
+		imagesByColor: object.imagesByColor,
 		active: object.active,
 		createDate: "no any date ololo",
 	};

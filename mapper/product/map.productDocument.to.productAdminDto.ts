@@ -15,6 +15,7 @@ export function mapProductDocumentToProductAdminDto(object: ProductDocument): Pr
 		price: object.price,
 		discount: object.discount,
 		currency: object.currency,
+		imagesByColor: object.imagesByColor,
 		active: object.active,
 		createDate: "no any date ololo",
 	};

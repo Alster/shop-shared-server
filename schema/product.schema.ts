@@ -79,13 +79,13 @@ export class Product {
 	@Min(0)
 	discount!: number;
 
+	@Prop({ type: Object })
+	@IsObject()
+	imagesByColor: Record<string, string[]> = {};
+
 	@Prop({ type: Boolean, default: false })
 	@IsBoolean()
 	active!: boolean;
-
-	// @Prop({ type: Object })
-	// @IsObject()
-	// imagesByColor: { [value in ItemColor]?: string[] } = {};
 
 	@Prop({ type: Date, default: new Date() })
 	@IsDate()

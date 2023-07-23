@@ -65,6 +65,9 @@ export class UpdateProductRequestDto implements ProductAdminDto {
 	@IsEnum(CurrencyEnum)
 	currency!: CurrencyEnum;
 
+	@IsObject()
+	imagesByColor!: Record<string, string[]>;
+
 	@IsBoolean()
 	active!: boolean;
 

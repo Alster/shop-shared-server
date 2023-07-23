@@ -100,6 +100,7 @@ export class ProductService {
 		product.price = updateData.price;
 		product.currency = updateData.currency;
 		product.discount = updateData.discount;
+		product.imagesByColor = updateData.imagesByColor;
 		product.active = updateData.active;
 		await product.save();
 		return product;
@@ -151,6 +152,7 @@ export class ProductService {
 					price: 1,
 					currency: 1,
 					discount: 1,
+					imagesByColor: 1,
 					active: 1,
 					createDate: 1,
 				})
