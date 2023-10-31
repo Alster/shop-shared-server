@@ -1,5 +1,4 @@
-import { ProductDto } from "shop-shared/dto/product/product.dto";
-
+import { ProductDto } from "../../../shop-shared/dto/product/product.dto";
 import { getTranslation } from "../../helpers/translationHelpers";
 import { ProductDocument } from "../../schema/product.schema";
 
@@ -17,6 +16,7 @@ export function mapProductDocumentToProductDto(object: ProductDocument, lang: st
 		price: object.price,
 		discount: object.discount,
 		imagesByColor: object.imagesByColor || {},
+		selectedColor: "no any color ololo",
 		active: object.active,
 		createDate: "no any date ololo",
 	};
