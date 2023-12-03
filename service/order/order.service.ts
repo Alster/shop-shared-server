@@ -1,6 +1,6 @@
 import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { InjectConnection, InjectModel } from "@nestjs/mongoose";
-import { Connection, Model } from "mongoose";
+import { Connection, FilterQuery, Model } from "mongoose";
 import { v4 as uuid } from "uuid";
 
 import { doExchange } from "../../../shop-exchange-shared/doExchange";
@@ -32,7 +32,7 @@ export class OrderService {
 	}
 
 	public async find(
-		query: any,
+		query: FilterQuery<OrderDocument>,
 		sort: any,
 		skip: number,
 		limit: number,
@@ -42,10 +42,18 @@ export class OrderService {
 	}> {
 		console.log("Query:", JSON.stringify(query, undefined, 2));
 		console.log("Sort:", JSON.stringify(sort, undefined, 2));
-		const getOrders = async () =>
-			this.orderModel.find(query).sort(sort).skip(skip).limit(limit).exec();
-		const getCount = async () => this.orderModel.countDocuments(query);
-		const [orders, totalCount] = await Promise.all([getOrders(), getCount()]);
+
+		const [orders, totalCount] = await Promise.all([
+			this.orderModel
+				// eslint-disable-next-line unicorn/no-array-callback-reference
+				.find(query)
+				.sort(sort)
+				.skip(skip)
+				.limit(limit)
+				.exec(),
+
+			this.orderModel.countDocuments(query),
+		]);
 
 		return {
 			orders: orders,
@@ -65,7 +73,7 @@ export class OrderService {
 
 		const session = await this.connection.startSession();
 
-		let order: OrderDocument[] | undefined;
+		let orderCreationResult: OrderDocument[] | undefined;
 		let error: Error | undefined;
 		let totalPrice: MoneySmall = 0;
 		let products: ProductDocument[] = [];
@@ -98,7 +106,7 @@ export class OrderService {
 								return values.every(
 									(v) =>
 										candidate.attributes[key] &&
-										candidate.attributes[key].includes(v),
+										candidate.attributes[key]!.includes(v),
 								);
 							});
 						});
@@ -113,7 +121,7 @@ export class OrderService {
 						return foundItem;
 					};
 
-					for (const _index of Array.from({ length: itemData.qty })) {
+					for (const index of Array.from({ length: itemData.qty })) {
 						const item = popItem(itemData);
 						if (!item) {
 							throw new PublicError("ITEM_ALREADY_SELL");
@@ -137,7 +145,7 @@ export class OrderService {
 					return accumulator;
 				}, 0);
 
-				order = await this.orderModel.create(
+				orderCreationResult = await this.orderModel.create(
 					[
 						{
 							firstName: createOrderData.firstName,
@@ -154,24 +162,25 @@ export class OrderService {
 					{ session },
 				);
 			});
-		} catch (error_) {
-			error = error_;
+		} catch (error_: unknown) {
+			error = error_ as Error;
 		} finally {
 			await session.endSession();
 		}
 		if (error) {
 			throw error;
 		}
-		if (!order) {
+		const createdOrder = (orderCreationResult ?? []).pop();
+		if (!createdOrder) {
 			throw new Error("Impossible error");
 		}
-		return [order[0], totalPrice, products];
+		return [createdOrder, totalPrice, products];
 	}
 
 	async updateOrderStatus(
 		id: string,
 		status: OrderStatus,
-		additionalData?: any,
+		additionalData?: unknown,
 	): Promise<OrderDocument> {
 		const now = new Date();
 		await this.orderModel.updateOne(
@@ -225,7 +234,7 @@ export class OrderService {
 					if (!product) {
 						throw new NotFoundException();
 					}
-					for (const _index of Array.from({ length: item.qty })) {
+					for (const index of Array.from({ length: item.qty })) {
 						product.items.push({
 							attributes: item.attributes,
 							sku: uuid(),
@@ -245,9 +254,11 @@ export class OrderService {
 					)
 					.session(session);
 			});
-		} catch (error) {
+		} catch (error: unknown) {
 			this.logger.error(error);
-			this.logger.error(error.stack);
+			if (error instanceof Error) {
+				this.logger.error(error.stack);
+			}
 		} finally {
 			await session.endSession();
 		}

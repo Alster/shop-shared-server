@@ -134,7 +134,7 @@ ProductSchema.pre("save", function (next) {
 		if (!accumulator[key]) {
 			accumulator[key] = new Set();
 		}
-		for (const v of values) accumulator[key].add(v);
+		for (const v of values) accumulator[key]!.add(v);
 		return accumulator;
 	}, {});
 
