@@ -1,7 +1,7 @@
 import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { ObjectId } from "mongodb";
-import { Model } from "mongoose";
+import { FilterQuery, Model, ProjectionType } from "mongoose";
 
 import { LanguageEnum } from "../../../shop-shared/constants/localization";
 import {
@@ -123,7 +123,7 @@ export class ProductService {
 	}
 
 	public async find(
-		query: any,
+		query: FilterQuery<ProductDocument>,
 		sort: any,
 		skip: number,
 		limit: number,
@@ -138,24 +138,28 @@ export class ProductService {
 	}> {
 		console.log("Query:", JSON.stringify(query, null, 2));
 		console.log("Sort:", JSON.stringify(sort, null, 2));
+
+		const projection = {
+			publicId: 1,
+			[`title.${lang}`]: 1,
+			[`description.${lang}`]: 1,
+			categories: 1,
+			characteristics: 1,
+			items: 1,
+			attrs: 1,
+			quantity: 1,
+			price: 1,
+			currency: 1,
+			discount: 1,
+			imagesByColor: 1,
+			active: 1,
+			createDate: 1,
+		} as const satisfies ProjectionType<ProductDocument>;
+
 		const getProducts = async () =>
 			this.productModel
-				.find(query, {
-					publicId: 1,
-					[`title.${lang}`]: 1,
-					[`description.${lang}`]: 1,
-					categories: 1,
-					characteristics: 1,
-					items: 1,
-					attrs: 1,
-					quantity: 1,
-					price: 1,
-					currency: 1,
-					discount: 1,
-					imagesByColor: 1,
-					active: 1,
-					createDate: 1,
-				})
+				// eslint-disable-next-line unicorn/no-array-callback-reference,unicorn/no-array-method-this-argument
+				.find(query, projection)
 				.sort(sort)
 				.skip(skip)
 				.limit(limit)
@@ -237,17 +241,13 @@ const AttributesAccumulator = {
 	},
 	accumulate: function (state: ProductAttributesDto, document: ProductAttributesDto) {
 		for (const key in document) {
-			state[key] = Object.prototype.hasOwnProperty.call(state, key)
-				? state[key].concat(document[key])
-				: document[key];
+			state[key] = [...(state[key] ?? []), ...(document[key] ?? [])];
 		}
 		return state;
 	},
 	merge: function (state: ProductAttributesDto, document: ProductAttributesDto) {
 		for (const key in document) {
-			state[key] = Object.prototype.hasOwnProperty.call(state, key)
-				? state[key].concat(document[key])
-				: document[key];
+			state[key] = [...(state[key] ?? []), ...(document[key] ?? [])];
 		}
 		return state;
 	},

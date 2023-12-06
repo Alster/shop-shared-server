@@ -15,7 +15,11 @@ export function mapOrderDocumentToOrderAdminDto(orderDocument: OrderDocument): O
 		createDate: orderDocument.createDate.toISOString(),
 		statusHistory: orderDocument.statusHistory,
 		lastStatusUpdateDate: orderDocument.lastStatusUpdateDate,
-		invoiceId: orderDocument.invoiceId,
-		monoResponse: orderDocument.monoResponse,
+		...(orderDocument.invoiceId && {
+			invoiceId: orderDocument.invoiceId,
+		}),
+		...(orderDocument.monoResponse && {
+			monoResponse: orderDocument.monoResponse,
+		}),
 	};
 }
