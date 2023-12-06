@@ -8,8 +8,8 @@ function mapCategoryNodeToCategoriesNodeDTO(object: CategoryNode, lang: string):
 	return {
 		id: object._id.toString(),
 		publicId: object.publicId,
-		title: object.title[lang],
-		description: object.title[lang],
+		title: object.title[lang] ?? "",
+		description: object.title[lang] ?? "",
 		children: object.children.map((child) => mapCategoryNodeToCategoriesNodeDTO(child, lang)),
 		sort: object.sort,
 		active: object.active,
