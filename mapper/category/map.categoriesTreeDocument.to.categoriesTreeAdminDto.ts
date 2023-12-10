@@ -16,7 +16,7 @@ function mapCategoryNodeToCategoriesNodeDTO(object: CategoryNode): CategoriesNod
 		publicId: object.publicId,
 		title: object.title,
 		description: object.title,
-		children: object.children.map((child) => mapCategoryNodeToCategoriesNodeDTO(child)),
+		children: (object.children ?? []).map((child) => mapCategoryNodeToCategoriesNodeDTO(child)),
 		sort: object.sort,
 		active: object.active,
 	};
