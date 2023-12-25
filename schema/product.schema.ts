@@ -144,8 +144,8 @@ ProductSchema.pre("save", function (next) {
 			[...values.values()],
 		]),
 	);
-	console.log(aggregatedAttributes);
-	console.log(this.attrs);
+	// console.log(aggregatedAttributes);
+	// console.log(this.attrs);
 
 	this.searchWords = Object.values(this.title).join(" ");
 

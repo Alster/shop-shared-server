@@ -1,4 +1,5 @@
 import { Optional } from "@nestjs/common";
+import { Type } from "class-transformer";
 import {
 	IsArray,
 	IsBoolean,
@@ -40,6 +41,7 @@ export class UpdateProductRequestDto implements Omit<ProductAdminDto, "createDat
 	characteristics!: ProductAttributesDto;
 
 	@IsArray()
+	@Type(() => Object)
 	items!: ProductItemDto[];
 
 	@IsObject()
@@ -50,6 +52,7 @@ export class UpdateProductRequestDto implements Omit<ProductAdminDto, "createDat
 	@Min(0)
 	quantity!: number;
 
+	@Type(() => Number)
 	@IsNumber()
 	@IsInt()
 	@Min(1)

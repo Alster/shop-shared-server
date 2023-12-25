@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Type } from "class-transformer";
 import { IsArray, IsBoolean, IsNumber, IsObject, IsString } from "class-validator";
 import { ObjectId } from "mongodb";
 import { HydratedDocument } from "mongoose";
@@ -7,6 +8,7 @@ import { TranslatedText } from "../../shop-shared/dto/translatedText";
 
 export class CategoryNode {
 	@Prop({ type: Object })
+	@Type(() => ObjectId)
 	@IsString()
 	_id!: ObjectId;
 
@@ -23,6 +25,7 @@ export class CategoryNode {
 	description!: TranslatedText;
 
 	@Prop({ type: Array, default: [] })
+	@Type(() => CategoryNode)
 	@IsArray({ each: true })
 	children!: CategoryNode[];
 

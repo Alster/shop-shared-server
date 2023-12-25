@@ -88,7 +88,7 @@ export class ProductService {
 			.filter((v) => ObjectId.isValid(v))
 			.map((v) => new ObjectId(v));
 
-		console.log("categories", JSON.stringify(categories, undefined, 2));
+		// console.log("categories", JSON.stringify(categories, undefined, 2));
 		product.categoriesAll = categories.flatMap((category) =>
 			Array.from({ length: category.parents.length + 1 }).map((_, index) =>
 				[...category.parents, category.publicId].splice(0, index + 1).join("/"),
@@ -120,6 +120,10 @@ export class ProductService {
 
 	public async deleteProduct(id: string): Promise<void> {
 		await this.productModel.findByIdAndDelete(id).exec();
+	}
+
+	public async removeAllProducts(): Promise<void> {
+		await this.productModel.deleteMany({});
 	}
 
 	public async find(

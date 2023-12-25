@@ -1,8 +1,12 @@
+import { LanguageEnum } from "../../../shop-shared/constants/localization";
 import { ProductDto } from "../../../shop-shared/dto/product/product.dto";
 import { getTranslation } from "../../helpers/translationHelpers";
 import { ProductDocument } from "../../schema/product.schema";
 
-export function mapProductDocumentToProductDto(object: ProductDocument, lang: string): ProductDto {
+export function mapProductDocumentToProductDto(
+	object: ProductDocument,
+	lang: LanguageEnum,
+): ProductDto {
 	return {
 		id: object._id.toString(),
 		publicId: object.publicId,

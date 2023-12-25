@@ -1,10 +1,11 @@
+import { LanguageEnum } from "../../../shop-shared/constants/localization";
 import { AttributeDto } from "../../../shop-shared/dto/product/attribute.dto";
 import { getTranslation } from "../../helpers/translationHelpers";
 import { ItemAttributeDocument } from "../../schema/itemAttribute.schema";
 
 export function mapAttributeDocumentToAttributeDto(
 	object: ItemAttributeDocument,
-	lang: string,
+	lang: LanguageEnum,
 ): AttributeDto {
 	return {
 		id: object._id.toString(),
