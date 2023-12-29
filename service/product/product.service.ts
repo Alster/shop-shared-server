@@ -175,7 +175,7 @@ export class ProductService {
 			quantity: { $gt: 0 },
 		};
 		const getAggregation = async () => {
-			const [result] = await this.productModel.aggregate([
+			const buildPipeline = [
 				{
 					$match: aggregationQuery,
 				},
@@ -215,7 +215,9 @@ export class ProductService {
 						priceMax: 1,
 					},
 				},
-			]);
+			] as const satisfies Parameters<(typeof Model<ProductDocument>)["aggregate"]>[0];
+			// console.log(JSON.stringify(buildPipeline, null, 2));
+			const [result] = await this.productModel.aggregate(buildPipeline);
 			return result;
 		};
 		const [products, aggregatedResult, totalCount] = await Promise.all([
@@ -245,13 +247,23 @@ const AttributesAccumulator = {
 	},
 	accumulate: function (state: ProductAttributesDto, document: ProductAttributesDto) {
 		for (const key in document) {
-			state[key] = [...(state[key] ?? []), ...(document[key] ?? [])];
+			// @ts-expect-error - Support Mongo
+			state[key] = Object.prototype.hasOwnProperty.call(state, key)
+				? // @ts-expect-error - Support Mongo
+				  // eslint-disable-next-line unicorn/prefer-spread
+				  state[key].concat(document[key])
+				: document[key];
 		}
 		return state;
 	},
 	merge: function (state: ProductAttributesDto, document: ProductAttributesDto) {
 		for (const key in document) {
-			state[key] = [...(state[key] ?? []), ...(document[key] ?? [])];
+			// @ts-expect-error - Support Mongo
+			state[key] = Object.prototype.hasOwnProperty.call(state, key)
+				? // @ts-expect-error - Support Mongo
+				  // eslint-disable-next-line unicorn/prefer-spread
+				  state[key].concat(document[key])
+				: document[key];
 		}
 		return state;
 	},
