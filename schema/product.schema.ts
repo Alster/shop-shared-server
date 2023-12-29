@@ -126,6 +126,11 @@ ProductSchema.index(
 );
 
 ProductSchema.pre("save", function (next) {
+	if (!this.items) {
+		console.error(
+			`On save trigger: No items found for product: "${JSON.stringify(this, null, 2)}"`,
+		);
+	}
 	this.quantity = this.items.length;
 
 	const collectedAttributes = [
