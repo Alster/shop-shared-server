@@ -32,6 +32,7 @@ export class Product {
 	@IsObject()
 	title!: TranslatedText;
 
+	// Field contains texts in which we want to search
 	@Prop({ type: String, default: "" })
 	@IsString()
 	searchWords!: string;
@@ -44,10 +45,12 @@ export class Product {
 	@IsArray()
 	categories!: ObjectId[];
 
+	// Complete hierarchy of selected category
 	@Prop({ type: Array, default: [] })
 	@IsArray()
 	categoriesAll!: string[];
 
+	// Common attributes applies to whole product
 	@Prop({ type: Object, default: {} })
 	@IsObject()
 	characteristics!: ProductAttributesDto;
@@ -56,10 +59,12 @@ export class Product {
 	@IsArray()
 	items!: ProductItemDto[];
 
+	// Computed attributes from all items
 	@Prop({ type: Object, default: {} })
 	@IsObject()
 	attrs!: ProductAttributesDto;
 
+	// Computed quantity of items
 	@Prop({ type: Number, default: 0 })
 	@IsInt()
 	@Min(0)
