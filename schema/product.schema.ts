@@ -84,10 +84,6 @@ export class Product {
 	@Min(0)
 	discount!: number;
 
-	@Prop({ type: Object })
-	@IsObject()
-	imagesByColor: Record<string, string[]> = {};
-
 	@Prop({ type: Boolean, default: false })
 	@IsBoolean()
 	active!: boolean;

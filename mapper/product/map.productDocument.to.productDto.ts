@@ -19,7 +19,6 @@ export function mapProductDocumentToProductDto(
 		quantity: object.quantity,
 		price: object.price,
 		discount: object.discount,
-		imagesByColor: object.imagesByColor || {},
 		selectedColor: "no any color ololo",
 		active: object.active,
 		createDate: "no any date ololo",

@@ -1,15 +1,12 @@
 import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { InjectConnection, InjectModel } from "@nestjs/mongoose";
+import * as assert from "assert";
 import { Connection, FilterQuery, Model } from "mongoose";
-import { v4 as uuid } from "uuid";
 
 import { doExchange } from "../../../shop-exchange-shared/doExchange";
 import { ExchangeState } from "../../../shop-exchange-shared/helpers";
 import { ORDER_STATUS, OrderStatus } from "../../../shop-shared/constants/order";
-import {
-	CreateOrderDto,
-	CreateOrderItemDataDto,
-} from "../../../shop-shared/dto/order/createOrder.dto";
+import { CreateOrderDto } from "../../../shop-shared/dto/order/createOrder.dto";
 import { MoneySmall } from "../../../shop-shared/dto/primitiveTypes";
 import { ProductItemDto } from "../../../shop-shared/dto/product/product.dto";
 import { PublicError } from "../../helpers/publicError";
@@ -67,9 +64,7 @@ export class OrderService {
 	): Promise<[OrderDocument, MoneySmall, ProductDocument[]]> {
 		this.logger.log("createOrder", createOrderData);
 
-		if (createOrderData.itemsData.length === 0) {
-			throw new PublicError("NO_ITEMS");
-		}
+		assert.ok(createOrderData.itemsData.length > 0, new PublicError("NO_ITEMS"));
 
 		const session = await this.connection.startSession();
 
@@ -77,6 +72,7 @@ export class OrderService {
 		let error: Error | undefined;
 		let totalPrice: MoneySmall = 0;
 		let products: ProductDocument[] = [];
+		let actualizedItemData: ProductItemDto[] = [];
 
 		try {
 			await session.withTransaction(async () => {
@@ -91,43 +87,26 @@ export class OrderService {
 					products.map((product) => [product._id.toString(), product]),
 				);
 
-				for (const itemData of createOrderData.itemsData) {
+				actualizedItemData = createOrderData.itemsData.map((itemData) => {
 					const product = productsMap[itemData.productId];
-					if (!product) {
-						throw new Error(`Product with id ${itemData.productId} not found`);
-					}
-					if (product.items.length === 0) {
-						throw new PublicError(`ITEM_ALREADY_SELL`);
-					}
+					assert.ok(
+						product,
+						new Error(`Product with id ${itemData.productId} not found`),
+					);
 
-					const popItem = (item: CreateOrderItemDataDto): ProductItemDto | undefined => {
-						const foundItem = product.items.find((candidate) => {
-							return Object.entries(item.attributes).every(([key, values]) => {
-								return values.every(
-									(v) =>
-										candidate.attributes[key] &&
-										candidate.attributes[key]!.includes(v),
-								);
-							});
-						});
+					const foundItem = product.items.find((item) => item.sku === itemData.sku);
+					assert.ok(
+						foundItem,
+						new NotFoundException(
+							`Item not found: "${JSON.stringify(itemData, null, 2)}"`,
+						),
+					);
 
-						if (!foundItem) {
-							return;
-						}
+					const index = product.items.indexOf(foundItem);
+					product.items.splice(index, 1);
 
-						const index = product.items.indexOf(foundItem);
-						product.items.splice(index, 1);
-
-						return foundItem;
-					};
-
-					for (const index of Array.from({ length: itemData.qty })) {
-						const item = popItem(itemData);
-						if (!item) {
-							throw new PublicError("ITEM_ALREADY_SELL");
-						}
-					}
-				}
+					return foundItem;
+				});
 
 				for (const product of products) {
 					product.markModified("items");
@@ -151,7 +130,7 @@ export class OrderService {
 							firstName: createOrderData.firstName,
 							lastName: createOrderData.lastName,
 							phoneNumber: createOrderData.phoneNumber,
-							itemsData: createOrderData.itemsData,
+							itemsData: actualizedItemData,
 							delivery: createOrderData.delivery,
 							totalPrice: Math.round(totalPrice),
 							currency: createOrderData.currency,
@@ -170,10 +149,10 @@ export class OrderService {
 		if (error) {
 			throw error;
 		}
+
 		const createdOrder = (orderCreationResult ?? []).pop();
-		if (!createdOrder) {
-			throw new Error("Impossible error");
-		}
+		assert.ok(createdOrder, new Error("Impossible error"));
+
 		return [createdOrder, totalPrice, products];
 	}
 
@@ -197,10 +176,9 @@ export class OrderService {
 				},
 			},
 		);
+
 		const order = await this.getOrder(id);
-		if (!order) {
-			throw new NotFoundException();
-		}
+		assert.ok(order, new NotFoundException());
 
 		if (status === ORDER_STATUS.FAILED && order.isItemsReturned === false) {
 			await this.returnItems(id);
@@ -215,43 +193,27 @@ export class OrderService {
 		try {
 			await session.withTransaction(async () => {
 				const order = await this.orderModel.findById(id).session(session);
-				if (!order) {
-					throw new NotFoundException();
-				}
+				assert.ok(order, new NotFoundException());
 
 				if (order.isItemsReturned) {
 					return;
 				}
 
-				if (order.status !== ORDER_STATUS.FAILED) {
-					throw new PublicError("ORDER_STATUS_NOT_FAILED");
-				}
+				assert.ok(
+					order.status === ORDER_STATUS.FAILED,
+					new PublicError("ORDER_STATUS_NOT_FAILED"),
+				);
 
-				for (const item of order.itemsData) {
-					const product = await this.productModel
-						.findById(item.productId)
-						.session(session);
-					if (!product) {
-						throw new NotFoundException();
-					}
-					for (const index of Array.from({ length: item.qty })) {
-						product.items.push({
-							attributes: item.attributes,
-							sku: uuid(),
-						});
-					}
+				for (const { productId, ...item } of order.itemsData) {
+					const product = await this.productModel.findById(productId).session(session);
+					assert.ok(product, new NotFoundException());
+
+					product.items.push(item);
 					product.markModified("items");
 					await product.save({ session });
 				}
 				await this.orderModel
-					.updateOne(
-						{
-							_id: order._id,
-						},
-						{
-							isItemsReturned: true,
-						},
-					)
+					.updateOne({ _id: order._id }, { isItemsReturned: true })
 					.session(session);
 			});
 		} catch (error: unknown) {
@@ -265,14 +227,7 @@ export class OrderService {
 	}
 
 	async setInvoice(id: string, invoiceId: string): Promise<void> {
-		await this.orderModel.updateOne(
-			{
-				_id: id,
-			},
-			{
-				invoiceId: invoiceId,
-			},
-		);
+		await this.orderModel.updateOne({ _id: id }, { invoiceId: invoiceId });
 	}
 
 	async getOrderByInvoiceId(invoiceId: string): Promise<OrderDocument | null> {
@@ -281,17 +236,14 @@ export class OrderService {
 
 	async cancelOrder(id: string): Promise<void> {
 		const order = await this.getOrder(id);
-		if (!order) {
-			throw new NotFoundException();
-		}
-		if (
-			([ORDER_STATUS.FINISHED, ORDER_STATUS.FAILED] as OrderStatus[]).includes(order.status)
-		) {
-			throw new PublicError("ORDER_ALREADY_FINISHED");
-		}
-		if (order.status === ORDER_STATUS.PAID) {
-			throw new PublicError("ORDER_ALREADY_PAID");
-		}
+		assert.ok(order, new NotFoundException());
+
+		assert.ok(
+			!([ORDER_STATUS.FINISHED, ORDER_STATUS.FAILED] as OrderStatus[]).includes(order.status),
+			new PublicError("ORDER_ALREADY_FINISHED"),
+		);
+		assert.ok(order.status !== ORDER_STATUS.PAID, new PublicError("ORDER_ALREADY_PAID"));
+
 		await this.updateOrderStatus(id, ORDER_STATUS.FAILED, {
 			reason: "CANCELED_BY_USER",
 		});
