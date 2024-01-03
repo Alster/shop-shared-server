@@ -6,7 +6,10 @@ import { Connection, FilterQuery, Model } from "mongoose";
 import { doExchange } from "../../../shop-exchange-shared/doExchange";
 import { ExchangeState } from "../../../shop-exchange-shared/helpers";
 import { ORDER_STATUS, OrderStatus } from "../../../shop-shared/constants/order";
-import { CreateOrderDto } from "../../../shop-shared/dto/order/createOrder.dto";
+import {
+	CreateOrderDto,
+	CreateOrderItemDataDto,
+} from "../../../shop-shared/dto/order/createOrder.dto";
 import { MoneySmall } from "../../../shop-shared/dto/primitiveTypes";
 import { ProductItemDto } from "../../../shop-shared/dto/product/product.dto";
 import { PublicError } from "../../helpers/publicError";
@@ -87,26 +90,31 @@ export class OrderService {
 					products.map((product) => [product._id.toString(), product]),
 				);
 
-				actualizedItemData = createOrderData.itemsData.map((itemData) => {
-					const product = productsMap[itemData.productId];
-					assert.ok(
-						product,
-						new Error(`Product with id ${itemData.productId} not found`),
-					);
+				actualizedItemData = createOrderData.itemsData.map(
+					(itemData): CreateOrderItemDataDto => {
+						const product = productsMap[itemData.productId];
+						assert.ok(
+							product,
+							new Error(`Product with id ${itemData.productId} not found`),
+						);
 
-					const foundItem = product.items.find((item) => item.sku === itemData.sku);
-					assert.ok(
-						foundItem,
-						new NotFoundException(
-							`Item not found: "${JSON.stringify(itemData, null, 2)}"`,
-						),
-					);
+						const foundItem = product.items.find((item) => item.sku === itemData.sku);
+						assert.ok(
+							foundItem,
+							new NotFoundException(
+								`Item not found: "${JSON.stringify(itemData, null, 2)}"`,
+							),
+						);
 
-					const index = product.items.indexOf(foundItem);
-					product.items.splice(index, 1);
+						const index = product.items.indexOf(foundItem);
+						product.items.splice(index, 1);
 
-					return foundItem;
-				});
+						return {
+							productId: product._id.toString(),
+							...foundItem,
+						};
+					},
+				);
 
 				for (const product of products) {
 					product.markModified("items");
@@ -178,7 +186,7 @@ export class OrderService {
 		);
 
 		const order = await this.getOrder(id);
-		assert.ok(order, new NotFoundException());
+		assert.ok(order, new NotFoundException(`Order not found: ${id}`));
 
 		if (status === ORDER_STATUS.FAILED && order.isItemsReturned === false) {
 			await this.returnItems(id);
