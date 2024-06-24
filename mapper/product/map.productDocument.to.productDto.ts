@@ -1,3 +1,4 @@
+import { AttributesEnum } from "../../../shop-shared/constants/attributesEnum";
 import { LanguageEnum } from "../../../shop-shared/constants/localization";
 import { ProductDto } from "../../../shop-shared/dto/product/product.dto";
 import { getTranslation } from "../../helpers/translationHelpers";
@@ -6,7 +7,8 @@ import { ProductDocument } from "../../schema/product.schema";
 export function mapProductDocumentToProductDto(
 	object: ProductDocument,
 	lang: LanguageEnum,
-	colorInFilters?: string[],
+	colorInFilters: string[] = [],
+	sizeInFilters: string[] = [],
 ): ProductDto {
 	return {
 		id: object._id.toString(),
@@ -21,30 +23,42 @@ export function mapProductDocumentToProductDto(
 		price: object.price,
 		discount: object.discount,
 		selectedItem: (() => {
-			if (!colorInFilters) {
-				return object.items[0]?.sku ?? null;
-			}
-
-			// const bestItem = object.items.find((item) =>
-			// 	(item.attributes["color"] ?? []).some((color) => colorInFilters.includes(color)),
-			// );
+			const maxColorValuesCount = Math.max(
+				...object.items.map((item) => (item.attributes[AttributesEnum.COLOR] ?? []).length),
+			);
 
 			const [bestItem] = object.items
-				.flatMap((item) =>
-					colorInFilters.map((color) => ({
-						score: (item.attributes["color"] ?? []).indexOf(color),
-						item,
-					})),
-				)
-				.filter((item) => item.score !== -1)
-				.map((score) => ({ ...score, score: score.score }))
-				.sort((a, b) => a.score - b.score);
+				.map((item) => ({
+					item,
+					score:
+						// Score how many colors from filters are in item, and what is their position
+						colorInFilters
+							.map((color) =>
+								(item.attributes[AttributesEnum.COLOR] ?? []).indexOf(color),
+							)
+							.filter((index) => index !== -1)
+							.map((index) => (maxColorValuesCount - index) / maxColorValuesCount)
+							.reduce((a, b) => a + b, 0) +
+						// Score if item has size from filters
+						sizeInFilters
+							.map((size) =>
+								(
+									item.attributes[AttributesEnum.SIZE] ??
+									item.attributes[AttributesEnum.SIZE_SHOES] ??
+									[]
+								).includes(size)
+									? 1
+									: 0,
+							)
+							.reduce((a, b) => a + b, 0 as number),
+				}))
+				.sort((a, b) => b.score - a.score);
 
 			if (bestItem) {
 				return bestItem.item.sku;
 			}
 
-			return null;
+			return object.items[0]?.sku ?? null;
 		})(),
 		active: object.active,
 		createDate: "no any date ololo",
