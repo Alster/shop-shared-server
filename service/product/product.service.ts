@@ -224,6 +224,8 @@ export class ProductService {
 			getCount(),
 		]);
 
+		console.log(`Found ${products.length} products`);
+
 		return {
 			products: products,
 			total: totalCount,
